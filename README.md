@@ -1,31 +1,37 @@
-# TREC-COVID Document-Selection Experiments: Method Reimplementation and Evaluation
+# TREC-COVID Document-Selection Experiments
 
-**Author: QronG9 · v2.0.0 · 2026-09-05**
+Reproducible document-selection experiments on the BEIR version of TREC-COVID, covering **171,332 documents, all 50 queries, and 12 retrieval / selection configurations**.
 
-**Start here: [My Research Note](docs/RESEARCH_NOTE.md)** · [Methods and Computational Definitions](docs/METHODS.md) · [My Contributions](docs/CONTRIBUTIONS.md)
+This repository contains fixed rankings, evaluation code, result tables, figures, and provenance records for studying how retrieval choices affect **judgment coverage** and observed retrieval effectiveness.
 
-I conducted a series of reproducible experiments to examine which documents different selection methods retrieve and how much of their output can be evaluated using existing relevance judgments. Using **171,332 documents and all 50 queries** in the BEIR version of TREC-COVID, I reimplemented retrieval methods, saved their rankings, and calculated judgment coverage and observed retrieval metrics separately. This repository brings together my initial five-query experiments, frozen baselines evaluated on all queries, and subsequent method extensions and evaluation analyses.
+**Release:** v2.0.0 · 2026-09-05  
+**Author:** Rongrong Liu
 
-I release **fixed top-1000 rankings for each query in 12 retrieval and selection configurations**, together with the original queries, qrels, document metadata, analysis code, and result tables. Including the five-query stage and nonempty-abstract experiments, this version contains **740,000 saved ranking positions**. Readers can recompute the results offline and examine each experimental stage through the method configurations and provenance records.
+[Research Note](docs/RESEARCH_NOTE.md) · [Methods](docs/METHODS.md) · [Contributions and Tool Use](docs/CONTRIBUTIONS.md)
 
-**Summary:** I reimplemented document-selection methods and evaluated 12 retrieval and selection configurations on all 50 BEIR TREC-COVID queries. I report judgment coverage and observed retrieval effectiveness separately, examine document eligibility and fixed-candidate reranking, and compute sharp paired precision bounds. This repository includes saved rankings, original judgments, analysis code, and reproducible outputs from my initial experiments and subsequent extensions.
+## Overview
 
-## My Experiments and Outputs
+The experiments compare the documents selected by different retrieval and reranking methods and measure how much of each ranked output is covered by the existing TREC-COVID relevance judgments.
 
-| Work | Verifiable materials I release |
-|---|---|
-| Method reimplementation and extension | BM25, MPNet, two Direct normalization variants, two forms of random selection, Query Expansion, two MMR settings, SPLADE, BGE, and BM25 + CrossEncoder; 600,000 main ranking records in total |
-| Evaluation across all queries | Coverage and observed relevant proportions at @20, @50, @100, and @1000 for 12 configurations, together with P@20, Recall@1000, and per-query tables |
-| Document-set analysis | Set overlap between methods, set strata relative to BM25, document composition inside and outside BM25 top-1000, and set-invariance checks for fixed-candidate reranking |
-| Document-availability analysis | Title-and-abstract input definitions, stratification by abstract availability, and reselection of top-ranked BM25/MPNet documents from all corpus documents with nonempty abstracts |
-| Analysis of unjudged labels | Sharp bounds on paired precision differences for fixed lists, and an inventory of 492 unjudged query–document pairs in the top-20 union of the three baselines |
-| Reproducible release | Portable compressed rankings, a data dictionary, versions and hashes, standard-library analysis entry points, tests, and GitHub Actions |
+The release includes:
+
+- fixed top-1000 rankings for 12 retrieval and selection configurations;
+- all 50 BEIR TREC-COVID queries and the corresponding qrels;
+- document metadata used by the analyses;
+- coverage and observed retrieval metrics at multiple cutoffs;
+- document-set, abstract-availability, and fixed-candidate reranking analyses;
+- paired precision bounds for rankings containing unjudged documents;
+- offline analysis and verification scripts.
+
+The main release contains **600,000 ranking records** across the 12 configurations. Including the earlier five-query stage and nonempty-abstract experiments, the repository contains **740,000 saved ranking positions**.
 
 ## Main Results
 
-All values below are **equally weighted means over 50 queries**. Hole is the unjudged proportion; observed P@20 treats `qrel=2` as relevant, while U contributes no relevant hits in this calculation. These metrics address two distinct questions: how much output is covered by judgments, and how many relevant items the existing labels confirm.
+All values are equally weighted means over the 50 queries.
 
-| Method / experimental configuration | Hole@20 | Hole@100 | Observed P@20 |
+`Hole@k` is the proportion of retrieved documents without an existing relevance judgment. `Observed P@20` treats `qrel=2` as relevant and unjudged documents as not observed relevant.
+
+| Method / configuration | Hole@20 | Hole@100 | Observed P@20 |
 |---|---:|---:|---:|
 | BM25 | 0.0720 | 0.1960 | 0.487 |
 | MPNet | 0.4030 | 0.4918 | 0.426 |
@@ -33,90 +39,122 @@ All values below are **equally weighted means over 50 queries**. Hole is the unj
 | Direct: min-max | 0.0570 | 0.1508 | 0.628 |
 | Random Uniform | 0.9960 | 0.9934 | 0.001 |
 | Direct + MMR: select 1000 from 5000 | 0.8510 | 0.8760 | 0.035 |
-| Direct + MMR: rerank the existing 1000 | 0.6600 | 0.6630 | 0.078 |
+| Direct + MMR: rerank existing 1000 | 0.6600 | 0.6630 | 0.078 |
 | Query Expansion | 0.0600 | 0.1570 | 0.622 |
 | Retrieval Random | 0.1470 | 0.4228 | 0.503 |
 | SPLADE | 0.1080 | 0.2636 | 0.600 |
 | BGE | 0.1180 | 0.2788 | 0.668 |
 | BM25 + CrossEncoder | 0.0880 | 0.2416 | 0.581 |
 
-I recompute both Direct normalization configurations alongside the other methods. Sources: [coverage summary for all configurations](results/extensions/coverage_summary.csv) and [observed retrieval metrics](results/extensions/observed_ir_summary.csv). The [methods documentation](docs/METHODS.md) maps names to configurations. Models use their respective recorded input lengths, prefixes, and scoring settings; I interpret the differences as the performance of these specific configurations on this fixed benchmark.
+Full results are available in:
 
-I identify four observations that can be checked directly against these results:
+- [coverage_summary.csv](results/extensions/coverage_summary.csv)
+- [observed_ir_summary.csv](results/extensions/observed_ir_summary.csv)
+- [paired_precision_bounds_summary.csv](results/extensions/paired_precision_bounds_summary.csv)
 
-- **Methods within the same family can produce different results.** BGE and MPNet both use dense-vector retrieval, with Hole@20 values of 0.118 and 0.403, respectively. I therefore report results by specific model and configuration.
-- **Candidate sets and ranking prefixes can be examined separately.** BM25 + CrossEncoder retains the entire BM25 top-1000 set, so their coverage and recall at @1000 are identical; prefix metrics change with reranking. The two MMR settings further distinguish selection from a larger pool from reranking the same set.
-- **Document eligibility is associated with coverage.** When I reselect the top-20 from all corpus documents with nonempty abstracts using the existing scores, the MPNet−BM25 Hole difference changes from 33.1 to 16.2 percentage points. I also release the filtering definition, rankings, and stratified counts.
-- **The effect of unknown labels can be bounded exactly for fixed rankings.** With existing labels retained and QREL=2, the sharp range for the mean Direct−BM25 P@20 difference is **[0.092, 0.176]**, which is entirely positive. Among the additional configurations, the intervals for BGE−BM25, SPLADE−BM25, and BM25 + CrossEncoder−BM25 are also entirely positive; see the [extended bounds table](results/extensions/paired_precision_bounds_summary.csv).
+The exact model inputs, normalization choices, candidate pools, prefixes, and scoring settings are documented in [METHODS.md](docs/METHODS.md). Results should therefore be interpreted as properties of these specific configurations on this benchmark rather than as generic properties of model families.
 
-![My twelve document-selection configurations: judgment coverage and observed P@20](figures/method_comparison.png)
+### Selected observations
 
-All configurations use the same 50 queries. The [detailed three-baseline figure](figures/research_summary.png) further presents the abstract-eligibility condition and paired bounds.
+**Judgment coverage can differ substantially even within the same broad retrieval family.**  
+For example, BGE and MPNet have Hole@20 values of 0.118 and 0.403, respectively.
 
-## Quick Reproduction
+**Candidate selection and reranking should be distinguished.**  
+BM25 + CrossEncoder preserves the complete BM25 top-1000 document set, so set-level coverage and recall at @1000 remain unchanged while prefix metrics change after reranking. The two MMR configurations similarly separate selection from a larger candidate pool from reranking a fixed set.
 
-Python **3.9 or later** is required. Run the following from the repository root:
+**Document eligibility affects measured coverage.**  
+When the top-20 documents are reselected from documents with nonempty abstracts using the existing scores, the MPNet–BM25 Hole@20 difference decreases from 33.1 to 16.2 percentage points.
+
+**Unjudged documents do not always make pairwise conclusions indeterminate.**  
+Under `qrel=2` relevance, the sharp mean Direct−BM25 P@20 interval is **[0.092, 0.176]**. The corresponding intervals for BGE−BM25, SPLADE−BM25, and BM25 + CrossEncoder−BM25 are also entirely positive.
+
+![Judgment coverage and observed P@20 across twelve configurations](figures/method_comparison.png)
+
+A second figure with the three-baseline analysis, abstract-eligibility condition, and paired bounds is available at [figures/research_summary.png](figures/research_summary.png).
+
+## Reproduction
+
+Python **3.9+** is required.
+
+Run the complete offline verification from the repository root:
 
 ```bash
 python3 scripts/verify_release.py
 ```
 
-I implemented the core analysis as an offline workflow that uses only the Python standard library. The verification entry point checks release-file hashes, recomputes results in a separate temporary directory and compares them byte for byte with the released tables, runs input-validation and computational-semantics tests, and checks documentation links and figure sources. This version includes 34 regenerable result files, 10,274 numerical comparisons with historical outputs, and 21 tests. The record of this validation run is available in [RELEASE_VALIDATION](provenance/RELEASE_VALIDATION.md).
+This verifies release-file hashes, recomputes the released result tables in a temporary directory, compares regenerated outputs with the frozen release, runs input-validation and computational-semantics tests, and checks documentation and figure-source references.
 
-To save your own recomputed results:
+The current release contains:
+
+- 34 regenerable result files;
+- 10,274 numerical comparisons against frozen historical outputs;
+- 21 tests.
+
+The validation record is available in [provenance/RELEASE_VALIDATION.md](provenance/RELEASE_VALIDATION.md).
+
+To regenerate the analysis outputs:
 
 ```bash
 python3 scripts/analyze.py --output-dir build/results
-python3 scripts/analyze_extensions.py --data-dir data --output-dir build/results/extensions
+python3 scripts/analyze_extensions.py \
+  --data-dir data \
+  --output-dir build/results/extensions
 ```
 
-The first entry point recomputes the detailed three-baseline analysis and the nonempty-abstract experiments. The second recomputes coverage, observed metrics, and set analyses for the 12 configurations evaluated on all queries and the initial five-query experiments. Offline reproduction uses the released rankings; the configurations, code provenance, and model records for generating rankings from the original corpus are documented separately in the [methods documentation](docs/METHODS.md).
+The first script reproduces the detailed three-baseline and nonempty-abstract analyses. The second reproduces coverage, observed retrieval metrics, and set analyses for the 12 full-query configurations and the earlier five-query experiments.
 
-I also provide a figure-generation entry point. After installing the optional plotting dependencies, you can generate both figures from your own recomputed tables:
+Offline reproduction uses the released rankings. Ranking-generation configurations and implementation provenance are documented in [retrieval_source/README.md](retrieval_source/README.md) and [docs/METHODS.md](docs/METHODS.md).
+
+### Figures
+
+Install the optional plotting dependencies:
 
 ```bash
 python3 -m pip install -r requirements-figures.txt
-python3 scripts/plot_results.py --results-dir build/results --output-dir build/figures
 ```
 
-## Reading and File Guide
+Then regenerate the figures:
 
-| Entry point | Contents |
+```bash
+python3 scripts/plot_results.py \
+  --results-dir build/results \
+  --output-dir build/figures
+```
+
+## Repository Guide
+
+| Path | Contents |
 |---|---|
-| [Research note](docs/RESEARCH_NOTE.md) | My research questions, experimental stages, complete method comparison, and main analyses |
-| [Methods and computational definitions](docs/METHODS.md) | Implementation of the 12 configurations, 0/1/2/U semantics, formulas, randomization protocols, and reproduction levels |
-| [Ranking-generation code](retrieval_source/README.md) | Original method implementations, run configurations, dependencies, and code provenance |
-| [My contributions and tool use](docs/CONTRIBUTIONS.md) | My experimental work, released materials, and AI-assistance statement |
-| [Data documentation](data/README.md) | Original data, ranking format, document metadata, and data acquisition |
-| [Extension results](results/extensions/) | Per-query and aggregate results for the configurations evaluated on all queries and initial five-query experiments |
-| [Three-baseline coverage table](results/coverage_summary.csv) | Judgment coverage for BM25, MPNet, and Direct at four depths |
-| [Abstract strata](results/abstract_strata.csv) / [nonempty-abstract experiments](results/nonempty_coverage_summary.csv) | Analyses of document composition and eligibility |
-| [Paired precision bounds](results/paired_precision_bounds_summary.csv) | Sharp intervals for the three baselines after cancellation of shared unknown labels |
-| [Top-20 unjudged inventory](results/top20_unjudged_frame.csv) | Query, document, abstract status, and ranks in the three baselines |
-| [Research process](docs/RESEARCH_PROCESS.md) | Experimental stages, subsequent additions, and the definitions used in this version |
-| [Provenance and version records](provenance/README.md) / [historical materials](archive/README.md) | Correspondence among the initial experiments, freeze records, and subsequent additions |
+| [docs/RESEARCH_NOTE.md](docs/RESEARCH_NOTE.md) | Research questions, experimental stages, interpretation, and full analysis |
+| [docs/METHODS.md](docs/METHODS.md) | Method configurations, formulas, label semantics, randomization, and reproduction levels |
+| [docs/CONTRIBUTIONS.md](docs/CONTRIBUTIONS.md) | Author contributions and AI-assistance statement |
+| [retrieval_source/](retrieval_source/) | Ranking-generation implementations and run configurations |
+| [data/](data/) | Queries, qrels, document metadata, formats, and data provenance |
+| [results/](results/) | Frozen result tables and derived analyses |
+| [figures/](figures/) | Released figures |
+| [scripts/](scripts/) | Analysis, verification, and plotting entry points |
+| [tests/](tests/) | Input-validation and computational-semantics tests |
+| [provenance/](provenance/) | Validation records, hashes, configuration history, and version correspondence |
+| [archive/](archive/) | Historical materials retained from earlier stages |
 
-Proportions are expressed on a 0–1 scale; percentage-point differences are proportional differences multiplied by 100. Precision values and bounds in the main text use `label_rule=strict_eq2`; `relaxed_ge1` is provided separately as a supplementary relevance threshold.
+The primary relevance definition used in the README and main bounds is `label_rule=strict_eq2`. Results under `relaxed_ge1` are provided separately as a supplementary threshold.
 
-## How I Organize the Research Materials
+## Research Context
 
-I organize the repository with reference to the documented, consistent, complete, and exercisable criteria in [ACM Artifact Review and Badging](https://www.acm.org/publications/policies/artifact-review-and-badging-current):
+This work started from a reimplementation of the document-selection study by Rangreji, Zhong, and Field and uses BEIR/TREC-COVID as the evaluation setting.
 
-| Criterion | Corresponding materials |
-|---|---|
-| Documented | README, research note, method configurations, and data dictionary |
-| Consistent | Original labels, saved rankings, per-query tables, provenance comparisons, and hashes |
-| Complete within the stated research scope | Offline inputs, analysis scripts, tests, figures, and sources of third-party materials |
-| Exercisable | Reproduction in a clean directory, an automated verification entry point, and GitHub Actions |
+The repository focuses specifically on the reproducible experimental artifact: retrieval outputs, judgment coverage, observed metrics, document-set analyses, and uncertainty induced by unjudged labels.
 
-These four criteria guide the organization of this repository. I assembled and computationally validated this release; I have not submitted an ACM badge application.
+References to the upstream work, datasets, and their relationship to the experiments are documented in [docs/RESEARCH_NOTE.md](docs/RESEARCH_NOTE.md) and [data/README.md](data/README.md).
 
-## Citation, Licensing, and Release
+## Citation
 
-I use the document-selection study by Rangreji, Zhong, and Field as the starting point for my reimplementation, together with the data and evaluation context of BEIR/TREC-COVID. BEIR's discussion of judgment coverage and supplementary judgments informs my analysis; references and their specific relationship to this work are provided in the [research note](docs/RESEARCH_NOTE.md).
+Citation metadata is provided in [CITATION.cff](CITATION.cff).
 
-- [CITATION.cff](CITATION.cff): citation information for this project; upstream sources are listed in the research note and data documentation.
-- [LICENSE](LICENSE): licensing scope for code, documentation, and third-party data.
-- [GitHub release instructions](docs/GITHUB_RELEASE.md): pre-upload checks and repository publication steps.
+If you use this release, please cite the archived release corresponding to the version used. A Zenodo DOI can be added here after the GitHub release is archived.
 
-The original frozen materials retain their original versions. This version incorporates the completed subsequent runs as verifiable research outputs, with the research note above serving as the default reading entry point.
+## License
+
+See [LICENSE](LICENSE) and [LICENSE-CODE.txt](LICENSE-CODE.txt) for the licensing scope of the repository and included materials.
+
+Third-party datasets and upstream resources remain subject to their original terms.
