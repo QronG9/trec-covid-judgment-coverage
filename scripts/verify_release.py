@@ -40,7 +40,7 @@ def check_manifest(root):
         paths.add(name)
         if not path.is_file() or digest(path) != expected:
             fail("Checksum mismatch: " + name)
-    required = {"scripts/analyze.py", "docs/RESEARCH_NOTE.md", "data/trec-covid/qrels/test.tsv", "data/corpus_metadata.csv.gz"}
+    required = {"scripts/analyze.py", "docs/RESEARCH_NOTE.md", "data/trec-covid/qrels/test.tsv", "data/corpus_metadata.csv.gz", "scripts/analyze_extensions.py", "data/method_registry.json"}
     if not required.issubset(paths):
         fail("Manifest does not cover required release files")
     return len(paths)
@@ -54,7 +54,9 @@ def command(args, cwd=ROOT):
 
 
 def check_references(root, results):
-    refs = json.loads((root / "provenance/reference_values.json").read_text())["references"]
+    refs = []
+    for filename in ("reference_values.json", "extension_reference_values.json"):
+        refs.extend(json.loads((root / "provenance" / filename).read_text())["references"])
     tables = {}
     for ref in refs:
         name = ref["result_file"]
@@ -77,7 +79,7 @@ def check_references(root, results):
 
 def check_links(root):
     count = 0
-    for folder in [root, root / "docs", root / "data", root / "archive", root / "provenance"]:
+    for folder in [root, root / "docs", root / "data", root / "archive", root / "provenance", root / "retrieval_source"]:
         for path in folder.glob("*.md"):
             for raw in re.findall(r"\]\(([^)]+)\)", path.read_text(encoding="utf-8")):
                 target = raw.strip().strip("<>").split("#", 1)[0]
@@ -101,26 +103,29 @@ def main():
     with tempfile.TemporaryDirectory(prefix="trec-covid-release-") as tmp:
         output = Path(tmp) / "results"
         command([sys.executable, str(ROOT / "scripts/analyze.py"), "--data-dir", str(ROOT / "data"), "--output-dir", str(output)])
-        expected_files = {p.name for p in (ROOT / "results").iterdir() if p.suffix in (".csv", ".json")}
-        actual_files = {p.name for p in output.iterdir()}
+        command([sys.executable, str(ROOT / "scripts/analyze_extensions.py"), "--data-dir", str(ROOT / "data"), "--output-dir", str(output / "extensions")])
+        expected_files = {p.relative_to(ROOT / "results").as_posix() for p in (ROOT / "results").rglob("*") if p.is_file() and p.suffix in (".csv", ".json")}
+        actual_files = {p.relative_to(output).as_posix() for p in output.rglob("*") if p.is_file()}
         if expected_files != actual_files:
             fail("Recomputed result inventory differs from the release")
         for name in expected_files:
             if (output / name).read_bytes() != (ROOT / "results" / name).read_bytes():
                 fail("Clean recomputation differs from committed result: " + name)
         print(f"PASS: {len(expected_files)} result files reproduced byte for byte in a clean temporary directory")
-        print(f"PASS: {check_references(ROOT, output)} numerical comparisons against original/audit reference values")
+        print(f"PASS: {check_references(ROOT, output)} numerical comparisons against saved experiment reference values")
     for flags, label in [([], "normal"), (["-O"], "optimized")]:
         text = command([sys.executable, *flags, "-m", "unittest", "discover", "-s", "tests"])
         match = re.search(r"Ran (\d+) tests", text)
         print(f"PASS: {match.group(1) if match else 'all'} semantic/input tests ({label} Python)")
+    source_check = command([sys.executable, str(ROOT / "retrieval_source/verify_source.py")])
+    print(source_check.strip())
     print(f"PASS: {check_links(ROOT)} relative documentation links")
     fig = json.loads((ROOT / "figures/figure_sources.json").read_text())
     for name, expected in fig["source_table_sha256"].items():
         if digest(ROOT / "results" / name) != expected:
             fail("Figure source is stale: " + name)
     print("PASS: figure source tables match the recorded hashes")
-    print("Release verification completed. This is computational verification, not peer review or ACM certification.")
+    print("Release verification completed: fixed-input calculations, numerical continuity, and file integrity.")
 
 
 if __name__ == "__main__":

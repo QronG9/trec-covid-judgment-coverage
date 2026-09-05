@@ -1,5 +1,5 @@
 {
-  "scope": "Reference numbers extracted from the original outputs and separate audit evidence, not from the new analyze.py outputs. They check numerical continuity, not scientific validity. Sources are identified by original project-relative paths.",
+  "scope": "I retain reference values from my saved experiment and verification tables to track numerical continuity. Each row records its original project-relative source path.",
   "references": [
     {
       "result_file": "coverage_by_query.csv",

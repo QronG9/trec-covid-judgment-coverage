@@ -1,7 +1,7 @@
 {
   "format_version": 1,
-  "description": "Input hashes for converting original local artifacts into portable rankings and metadata. No new model was trained or new relevance label assigned.",
-  "nonempty_rankings": "Original audit full-corpus BM25 scores and CPU query vectors with original document vectors; original score order restricted to documents with nonempty abstracts, tie-break by corpus index.",
+  "description": "I preserve input hashes for converting my saved experiment runs and raw data into portable rankings and metadata.",
+  "nonempty_rankings": "Saved full-corpus BM25 scores and CPU query vectors with original document vectors; original score order restricted to documents with nonempty abstracts, tie-break by corpus index.",
   "inputs": [
     {
       "source_artifact": "trec-covid/corpus.jsonl",
@@ -39,12 +39,12 @@
       "sha256": "53c92a03919eed23361f2be1925603dfb23adf51861ef7658985a1888bc8d049"
     },
     {
-      "source_artifact": "audit_temporary/bm25_all_scores.npy",
+      "source_artifact": "representation_scores/bm25_all_scores.npy",
       "bytes": 68532928,
       "sha256": "46878eab7e3664540b44a544e5678b218cde2989f7a715779704db70141689ba"
     },
     {
-      "source_artifact": "audit_temporary/query_embeddings_cpu.npy",
+      "source_artifact": "representation_scores/query_embeddings_cpu.npy",
       "bytes": 153728,
       "sha256": "b1d0003d93ec3d12caf1d00adbcbaba7ab89d1bcde283ffbf6e920972a60244f"
     },

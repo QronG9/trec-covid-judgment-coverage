@@ -1,0 +1,143 @@
+{
+  "format_version": 1,
+  "methods": [
+    {
+      "method": "bm25",
+      "display_name": "BM25",
+      "family": "lexical",
+      "run_file": "runs/bm25.tsv.gz",
+      "n_queries": 50,
+      "depth": 1000,
+      "ordering": "score_descending",
+      "score_kind": "BM25 score"
+    },
+    {
+      "method": "mpnet",
+      "display_name": "MPNet",
+      "family": "dense",
+      "run_file": "runs/mpnet.tsv.gz",
+      "n_queries": 50,
+      "depth": 1000,
+      "ordering": "score_descending",
+      "score_kind": "normalized dot product"
+    },
+    {
+      "method": "direct",
+      "display_name": "Direct",
+      "family": "hybrid",
+      "run_file": "runs/direct.tsv.gz",
+      "n_queries": 50,
+      "depth": 1000,
+      "ordering": "score_descending",
+      "score_kind": "max-normalized component sum"
+    },
+    {
+      "method": "direct_minmax",
+      "display_name": "Direct minmax",
+      "family": "hybrid_variant",
+      "run_file": "runs/extensions/direct_minmax.tsv.gz",
+      "n_queries": 50,
+      "depth": 1000,
+      "ordering": "score_descending",
+      "score_kind": "minmax-normalized component sum"
+    },
+    {
+      "method": "uniform_random",
+      "display_name": "Random Uniform",
+      "family": "random",
+      "run_file": "runs/extensions/uniform_random.tsv.gz",
+      "n_queries": 50,
+      "depth": 1000,
+      "ordering": "sample_order",
+      "score_kind": "unscored"
+    },
+    {
+      "method": "direct_mmr",
+      "display_name": "Direct + MMR (5000 to 1000)",
+      "family": "diversity_selection",
+      "run_file": "runs/extensions/direct_mmr.tsv.gz",
+      "n_queries": 50,
+      "depth": 1000,
+      "ordering": "greedy_selection_order",
+      "score_kind": "query-document cosine, not the MMR objective"
+    },
+    {
+      "method": "direct_mmr_rerank",
+      "display_name": "Direct + MMR (reorder 1000)",
+      "family": "diversity_rerank",
+      "run_file": "runs/extensions/direct_mmr_rerank.tsv.gz",
+      "n_queries": 50,
+      "depth": 1000,
+      "ordering": "greedy_selection_order",
+      "score_kind": "query-document cosine, not the MMR objective"
+    },
+    {
+      "method": "query_expansion",
+      "display_name": "Query Expansion",
+      "family": "query_expansion",
+      "run_file": "runs/extensions/query_expansion.tsv.gz",
+      "n_queries": 50,
+      "depth": 1000,
+      "ordering": "score_descending",
+      "score_kind": "weighted reciprocal-rank fusion"
+    },
+    {
+      "method": "retrieval_random",
+      "display_name": "Retrieval Random",
+      "family": "subset_sampling",
+      "run_file": "runs/extensions/retrieval_random.tsv.gz",
+      "n_queries": 50,
+      "depth": 1000,
+      "ordering": "sample_then_candidate_order",
+      "score_kind": "Direct score after subset sampling"
+    },
+    {
+      "method": "splade",
+      "display_name": "SPLADE",
+      "family": "learned_sparse",
+      "run_file": "runs/extensions/splade.tsv.gz",
+      "n_queries": 50,
+      "depth": 1000,
+      "ordering": "score_descending",
+      "score_kind": "sparse vocabulary dot product"
+    },
+    {
+      "method": "bge",
+      "display_name": "BGE",
+      "family": "dense",
+      "run_file": "runs/extensions/bge.tsv.gz",
+      "n_queries": 50,
+      "depth": 1000,
+      "ordering": "score_descending",
+      "score_kind": "normalized dot product"
+    },
+    {
+      "method": "bm25_ce",
+      "display_name": "BM25 + CrossEncoder",
+      "family": "reranker",
+      "run_file": "runs/extensions/bm25_ce.tsv.gz",
+      "n_queries": 50,
+      "depth": 1000,
+      "ordering": "score_descending",
+      "score_kind": "cross-encoder score"
+    }
+  ],
+  "pilot_query_ids": [
+    "9",
+    "13",
+    "34",
+    "45",
+    "48"
+  ],
+  "pilot_methods": [
+    "bm25",
+    "mpnet",
+    "direct",
+    "uniform_random",
+    "direct_minmax",
+    "direct_mmr",
+    "query_expansion",
+    "retrieval_random"
+  ],
+  "pilot_primary_origin": "The five pilot queries selected from the preserved full-query base runs; the three secondary pilot files retain their original query-specific outputs."
+}

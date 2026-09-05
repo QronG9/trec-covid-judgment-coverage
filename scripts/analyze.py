@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Recompute descriptive diagnostics from saved rankings and raw TREC-COVID qrels.
+"""Recompute my coverage and label-completion analyses from saved rankings and raw TREC-COVID qrels.
 
 Python standard library only. Existing labels are held fixed; absent qrels and
 explicit -1 labels are unjudged. Precision bounds concern these saved rankings,
@@ -349,7 +349,7 @@ def unjudged_frame(runs, labels, metadata):
             })
     counts = Counter(row["n_methods"] for row in frame)
     summary = {
-        "scope": "Union of unjudged query-document pairs in the three saved top-20 rankings; diagnostic frame only, not a validated annotation protocol.",
+        "scope": "I list the union of unjudged query-document pairs in the three saved baseline top-20 rankings, with existing label status and method ranks.",
         "n_unique_query_document_pairs": len(frame),
         "n_unique_documents": len({row["doc_id"] for row in frame}),
         "n_queries": len({row["query_id"] for row in frame}),
@@ -432,7 +432,7 @@ def analyze(data_dir, output_dir):
         csv_outputs["nonempty_coverage_by_query.csv"] = nonempty
         csv_outputs["nonempty_coverage_summary.csv"] = nonempty_summary
     label_counts = Counter(label for query_labels in labels.values() for label in query_labels.values())
-    audit = {
+    data_summary = {
         "schema_version": 1,
         "scope": "Descriptive reanalysis of fixed saved rankings; this command does not rerun retrieval.",
         "n_queries": len(queries), "n_corpus_documents": len(metadata),
@@ -455,7 +455,7 @@ def analyze(data_dir, output_dir):
     output_dir.mkdir(parents=True, exist_ok=True)
     for name, rows in csv_outputs.items():
         write_csv(output_dir / name, rows)
-    write_json(output_dir / "data_audit.json", audit)
+    write_json(output_dir / "data_summary.json", data_summary)
     write_json(output_dir / "top20_unjudged_union.json", union_summary)
     return len(csv_outputs) + 2
 

@@ -1,0 +1,324 @@
+{
+  "format_version": 1,
+  "source_project": "93replication/stage1_pooling_bias",
+  "source_git_head": "e5d96e11b5b282998a509580be625099f86a70f4",
+  "source_selection": "Original ranking-generation modules and their local Python import closure; separate requirements snapshot.",
+  "source_py_files": 10,
+  "source_files": 11,
+  "files": [
+    {
+      "source_path": "src/common.py",
+      "published_path": "src/common.py",
+      "source_sha256": "8018558951d133ede731efb9d919e8a0398eeb909b7e9c40747f2b9e63f40b74",
+      "published_sha256": "d55b733342b80f04c697d2f61260eb28f1631c7d51612a52f39b18acf20641df",
+      "source_executable_ast_sha256": "5b8fdd41279a7a199b18c4e4d256ebba0f49aa08d4ff670add26efce9c845015",
+      "published_executable_ast_sha256": "5b8fdd41279a7a199b18c4e4d256ebba0f49aa08d4ff670add26efce9c845015",
+      "source_algorithm_ast_sha256": "5b8fdd41279a7a199b18c4e4d256ebba0f49aa08d4ff670add26efce9c845015",
+      "published_algorithm_ast_sha256": "5b8fdd41279a7a199b18c4e4d256ebba0f49aa08d4ff670add26efce9c845015",
+      "algorithm_ast_equal": true,
+      "transformation": "comments and docstrings standardized; executable AST equivalent"
+    },
+    {
+      "source_path": "src/bm25_index.py",
+      "published_path": "src/bm25_index.py",
+      "source_sha256": "bab4aabe7d96b0d6cee6317d93e2fcb59efd9bff1d0bf9804c33bd5e25a5556c",
+      "published_sha256": "8a7c3669c07507d63dd00e28b8e673cc6b97e2b5577fafc24e84d50544e4ac93",
+      "source_executable_ast_sha256": "3e8999ff06f8b140b7c6f62a2139a0659c1559bb0ccd81ba7933ec8c6413062d",
+      "published_executable_ast_sha256": "3e8999ff06f8b140b7c6f62a2139a0659c1559bb0ccd81ba7933ec8c6413062d",
+      "source_algorithm_ast_sha256": "3e8999ff06f8b140b7c6f62a2139a0659c1559bb0ccd81ba7933ec8c6413062d",
+      "published_algorithm_ast_sha256": "3e8999ff06f8b140b7c6f62a2139a0659c1559bb0ccd81ba7933ec8c6413062d",
+      "algorithm_ast_equal": true,
+      "transformation": "comments and docstrings standardized; executable AST equivalent"
+    },
+    {
+      "source_path": "src/build_artifacts.py",
+      "published_path": "src/build_artifacts.py",
+      "source_sha256": "560eda19b43961de5123fbc3369d8dc1895215adfa5de5176adb82d3fdb4818c",
+      "published_sha256": "c6b529195ccab12338a7261774a1afb8f6c0fb7c14f34647dcd6e34a25dbcc21",
+      "source_executable_ast_sha256": "6a690d92a630bb6af0bbe97008e5c28017eaae50f98d75e52a8bece0e9fd9d85",
+      "published_executable_ast_sha256": "6a690d92a630bb6af0bbe97008e5c28017eaae50f98d75e52a8bece0e9fd9d85",
+      "source_algorithm_ast_sha256": "6a690d92a630bb6af0bbe97008e5c28017eaae50f98d75e52a8bece0e9fd9d85",
+      "published_algorithm_ast_sha256": "6a690d92a630bb6af0bbe97008e5c28017eaae50f98d75e52a8bece0e9fd9d85",
+      "algorithm_ast_equal": true,
+      "transformation": "comments and docstrings standardized; executable AST equivalent"
+    },
+    {
+      "source_path": "src/retrieval.py",
+      "published_path": "src/retrieval.py",
+      "source_sha256": "34d81492e470c8f3375bdf1725d8984d190571e8c07aba55f187403d19b7c6e6",
+      "published_sha256": "14717a279fef36c343c2fbb59110a5c73fd2e7d1382205af323ef364db998e89",
+      "source_executable_ast_sha256": "5dfe60ced1df87b529da20af558b124d7901629f28e82a3ebb01b9fcdab79238",
+      "published_executable_ast_sha256": "5dfe60ced1df87b529da20af558b124d7901629f28e82a3ebb01b9fcdab79238",
+      "source_algorithm_ast_sha256": "5dfe60ced1df87b529da20af558b124d7901629f28e82a3ebb01b9fcdab79238",
+      "published_algorithm_ast_sha256": "5dfe60ced1df87b529da20af558b124d7901629f28e82a3ebb01b9fcdab79238",
+      "algorithm_ast_equal": true,
+      "transformation": "comments and docstrings standardized; executable AST equivalent"
+    },
+    {
+      "source_path": "src/run_retrieval.py",
+      "published_path": "src/run_retrieval.py",
+      "source_sha256": "0c431be306d6828b85388c1cab63071fa32e937770f97d028ed2c102faae275a",
+      "published_sha256": "fd63efaae8692daf5516ecbd79a1fbf855cefd1b5a6a42b0f7394f312cd9e980",
+      "source_executable_ast_sha256": "c8781b02ec8e2da052626a4aacebb7f6a20125c24c642d47a9352e6f7da6cc22",
+      "published_executable_ast_sha256": "c8781b02ec8e2da052626a4aacebb7f6a20125c24c642d47a9352e6f7da6cc22",
+      "source_algorithm_ast_sha256": "c8781b02ec8e2da052626a4aacebb7f6a20125c24c642d47a9352e6f7da6cc22",
+      "published_algorithm_ast_sha256": "c8781b02ec8e2da052626a4aacebb7f6a20125c24c642d47a9352e6f7da6cc22",
+      "algorithm_ast_equal": true,
+      "transformation": "comments and docstrings standardized; executable AST equivalent"
+    },
+    {
+      "source_path": "src/run_secondary.py",
+      "published_path": "src/run_secondary.py",
+      "source_sha256": "e46a8b13c1d330a4d8192ae079b30696f49c327c1595ecb83885f4eed5146fa6",
+      "published_sha256": "395d5c34f900430f621473ec7991bb50006f015f12b067b8d38ccdb765e5eeac",
+      "source_executable_ast_sha256": "e6c3ab492144938e4d1f54a58c16a5cf6b34fcef8876768c77dd4694cb588955",
+      "published_executable_ast_sha256": "e6c3ab492144938e4d1f54a58c16a5cf6b34fcef8876768c77dd4694cb588955",
+      "source_algorithm_ast_sha256": "e6c3ab492144938e4d1f54a58c16a5cf6b34fcef8876768c77dd4694cb588955",
+      "published_algorithm_ast_sha256": "e6c3ab492144938e4d1f54a58c16a5cf6b34fcef8876768c77dd4694cb588955",
+      "algorithm_ast_equal": true,
+      "transformation": "comments and docstrings standardized; executable AST equivalent"
+    },
+    {
+      "source_path": "extension_retrieval_methods/scripts/ext_common.py",
+      "published_path": "extension_retrieval_methods/scripts/ext_common.py",
+      "source_sha256": "d346b311ff63e85ad640529ecdae8503d2d159eb9973eef482b501210165f100",
+      "published_sha256": "7c39dfe7e7c97966bf638339f86933a106e79af605e133f1e0ff5eb01db36087",
+      "source_executable_ast_sha256": "857592b88c92fe3176e124827e529b1221e387e18dc9044433493595a5da1e54",
+      "published_executable_ast_sha256": "857592b88c92fe3176e124827e529b1221e387e18dc9044433493595a5da1e54",
+      "source_algorithm_ast_sha256": "857592b88c92fe3176e124827e529b1221e387e18dc9044433493595a5da1e54",
+      "published_algorithm_ast_sha256": "857592b88c92fe3176e124827e529b1221e387e18dc9044433493595a5da1e54",
+      "algorithm_ast_equal": true,
+      "transformation": "comments and docstrings standardized; executable AST equivalent"
+    },
+    {
+      "source_path": "extension_retrieval_methods/scripts/run_tier_a.py",
+      "published_path": "extension_retrieval_methods/scripts/run_tier_a.py",
+      "source_sha256": "78d77eb297e5b0c9f6ea455f7dd21055eb1eacb88ce4f002eaab8c82ed2c5a49",
+      "published_sha256": "adb0f71cb4fa44ccde8a932d9e7ba4aa748566ccd21f2305efce1d0b3d3e622f",
+      "source_executable_ast_sha256": "6fbb55e304f326fc5057e2276c89ee58e642cfc7aaa0f8c4d067abc99140a7e9",
+      "published_executable_ast_sha256": "6fbb55e304f326fc5057e2276c89ee58e642cfc7aaa0f8c4d067abc99140a7e9",
+      "source_algorithm_ast_sha256": "6fbb55e304f326fc5057e2276c89ee58e642cfc7aaa0f8c4d067abc99140a7e9",
+      "published_algorithm_ast_sha256": "6fbb55e304f326fc5057e2276c89ee58e642cfc7aaa0f8c4d067abc99140a7e9",
+      "algorithm_ast_equal": true,
+      "transformation": "comments and docstrings standardized; executable AST equivalent"
+    },
+    {
+      "source_path": "extension_retrieval_methods/scripts/run_tier_b.py",
+      "published_path": "extension_retrieval_methods/scripts/run_tier_b.py",
+      "source_sha256": "d41322424690192d501db5b368d9994a44189c5a4186b87d544416fdab280a99",
+      "published_sha256": "a66418ba27dcb3d614915fb7d4546951a66463933597b0aee9911df5a911e442",
+      "source_executable_ast_sha256": "8138e5ec136f514bc9132dde70986469d9664baa77ae1e1b447482e401cf60af",
+      "published_executable_ast_sha256": "8138e5ec136f514bc9132dde70986469d9664baa77ae1e1b447482e401cf60af",
+      "source_algorithm_ast_sha256": "8138e5ec136f514bc9132dde70986469d9664baa77ae1e1b447482e401cf60af",
+      "published_algorithm_ast_sha256": "8138e5ec136f514bc9132dde70986469d9664baa77ae1e1b447482e401cf60af",
+      "algorithm_ast_equal": true,
+      "transformation": "comments and docstrings standardized; executable AST equivalent"
+    },
+    {
+      "source_path": "extension_retrieval_methods/scripts/run_mmr_variant.py",
+      "published_path": "extension_retrieval_methods/scripts/run_mmr_variant.py",
+      "source_sha256": "368cb15c1df28a6798d82a76e0d6c612db3817d34f7e328badf2c99da095f2a4",
+      "published_sha256": "d5a20e9f8667d2cbb76cc8771300260a011221c2684432245e53c7721f86934a",
+      "source_executable_ast_sha256": "c022713ce2a2a2cbd4109abbe1f6beacb80a1dc304b77c4d803402755069781a",
+      "published_executable_ast_sha256": "eacec3d6d76b387a095aa65b041775766720f40a248629e4b1b66b7e275993fd",
+      "source_algorithm_ast_sha256": "22d19d0e4c54b138c994b2736e59de1265db4979de45f32dfee7131cbbdc6545",
+      "published_algorithm_ast_sha256": "22d19d0e4c54b138c994b2736e59de1265db4979de45f32dfee7131cbbdc6545",
+      "algorithm_ast_equal": true,
+      "transformation": "comments and docstrings standardized; executable AST equivalent; one descriptive metadata value standardized",
+      "metadata_standardization": {
+        "call": "save_run",
+        "mapping": "dict",
+        "key": "reason",
+        "source_value_sha256": "01c4010ff4ce7be5e86db48c3c4f42364153729e1acce878229e7f41d689553e",
+        "published_value": "MMR reorders the complete Direct top-1000 candidate set; lambda=0.3.",
+        "comparison_normalization": "Replace only this keyword literal in the dict argument of save_run with DESCRIPTIVE_REASON_METADATA before comparing ASTs."
+      }
+    },
+    {
+      "source_path": "requirements.txt",
+      "published_path": "requirements.txt",
+      "source_sha256": "e5fa356e7c0461618a44daaf9134fb2b2f784356d31a0bb40e809c334f94297e",
+      "published_sha256": "e5fa356e7c0461618a44daaf9134fb2b2f784356d31a0bb40e809c334f94297e",
+      "transformation": "byte-identical environment requirements snapshot"
+    }
+  ],
+  "import_inventory": {
+    "src/common.py": {
+      "local": [],
+      "third_party": [
+        "nltk",
+        "numpy"
+      ],
+      "standard_library": [
+        "__future__",
+        "datetime",
+        "json",
+        "os",
+        "pathlib",
+        "random",
+        "re"
+      ]
+    },
+    "src/bm25_index.py": {
+      "local": [
+        "common"
+      ],
+      "third_party": [
+        "numpy",
+        "rank_bm25",
+        "scipy"
+      ],
+      "standard_library": [
+        "__future__",
+        "pathlib",
+        "pickle"
+      ]
+    },
+    "src/build_artifacts.py": {
+      "local": [
+        "bm25_index",
+        "common"
+      ],
+      "third_party": [
+        "numpy",
+        "sentence_transformers",
+        "torch"
+      ],
+      "standard_library": [
+        "__future__",
+        "json",
+        "pickle",
+        "time"
+      ]
+    },
+    "src/retrieval.py": {
+      "local": [
+        "bm25_index",
+        "build_artifacts",
+        "common"
+      ],
+      "third_party": [
+        "nltk",
+        "numpy",
+        "sentence_transformers",
+        "torch"
+      ],
+      "standard_library": [
+        "__future__",
+        "json",
+        "pickle",
+        "re"
+      ]
+    },
+    "src/run_retrieval.py": {
+      "local": [
+        "common",
+        "retrieval"
+      ],
+      "third_party": [
+        "numpy",
+        "pandas"
+      ],
+      "standard_library": [
+        "__future__",
+        "json",
+        "sys",
+        "time"
+      ]
+    },
+    "src/run_secondary.py": {
+      "local": [
+        "common",
+        "retrieval",
+        "run_retrieval"
+      ],
+      "third_party": [
+        "pandas"
+      ],
+      "standard_library": [
+        "__future__",
+        "json"
+      ]
+    },
+    "extension_retrieval_methods/scripts/ext_common.py": {
+      "local": [],
+      "third_party": [
+        "numpy",
+        "torch"
+      ],
+      "standard_library": [
+        "__future__",
+        "datetime",
+        "json",
+        "os",
+        "pathlib",
+        "resource",
+        "sys",
+        "time"
+      ]
+    },
+    "extension_retrieval_methods/scripts/run_tier_a.py": {
+      "local": [
+        "common",
+        "ext_common",
+        "retrieval"
+      ],
+      "third_party": [
+        "numpy"
+      ],
+      "standard_library": [
+        "__future__"
+      ]
+    },
+    "extension_retrieval_methods/scripts/run_tier_b.py": {
+      "local": [
+        "common",
+        "ext_common"
+      ],
+      "third_party": [
+        "numpy",
+        "scipy",
+        "sentence_transformers",
+        "torch",
+        "transformers"
+      ],
+      "standard_library": [
+        "__future__",
+        "json",
+        "pathlib"
+      ]
+    },
+    "extension_retrieval_methods/scripts/run_mmr_variant.py": {
+      "local": [
+        "common",
+        "ext_common",
+        "retrieval"
+      ],
+      "third_party": [
+        "numpy"
+      ],
+      "standard_library": [
+        "__future__"
+      ]
+    }
+  },
+  "checks": {
+    "python_syntax_compile": "passed without executing imported modules",
+    "local_python_import_closure": "complete for the selected modules",
+    "source_vs_published_algorithm_ast": "equal for all Python files after removing docstrings and normalizing the one recorded descriptive metadata value",
+    "fresh_model_generation": "outside the executed checks for this release"
+  },
+  "original_environment": {
+    "python": "3.11.15",
+    "platform": "macOS arm64",
+    "dependencies": "requirements.txt preserves the original recorded environment; selected imports are listed above.",
+    "nltk_resource": "English stopwords corpus is a separate data dependency.",
+    "models": "Model names are recorded in source; model construction calls did not pass revision hashes."
+  },
+  "ast_representation": {
+    "format": "canonical JSON from ast.iter_fields; node type and all semantic fields; sorted object keys; compact separators",
+    "docstrings": "remove the leading string-expression docstring only from modules, functions, async functions, and classes",
+    "cross_python_normalization": "omit empty type_params fields introduced in newer Python versions",
+    "metadata_exception": "one save_run dict keyword reason value, only as recorded for run_mmr_variant.py"
+  }
+}

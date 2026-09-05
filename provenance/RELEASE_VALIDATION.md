@@ -1,44 +1,47 @@
-# Release verification — 2026-09-05
+# 我完成的发布验证
 
-This record concerns **v1.0.0 of the new artifact**, not a new scientific
-assessment of all historical or later extension claims.
+**v2.0.0 · 2026-09-05**
 
-| Check | Result and scope |
+我对本版保存的排名、原始判断和分析程序执行以下检查。验证入口在独立临时
+目录重新生成结果，让发布表与计算输入保持可核对的关系。
+
+| 检查 | 我的实际运行结果 |
 |---|---|
-| Original source preservation | 246 tracked/staged source files have unchanged SHA-256; original HEAD and pre-existing staged audit status unchanged |
-| Original freeze | All 72 entries in the original frozen manifest match |
-| Raw BEIR files | Corpus, queries and test qrels match recorded SHA-256; raw corpus regenerates byte-identical text-free metadata |
-| Primary analysis | 14 CSV/JSON result files independently generated from raw qrels and portable saved rankings |
-| Clean recomputation | All 14 files match byte for byte when generated in a fresh temporary directory |
-| Numerical continuity | 2,572 numeric comparisons against 1,324 reference rows from original outputs and separate audit evidence pass |
-| Nonempty-abstract export | 400 query/cutoff Hole cells match the original audit when recomputed with raw qrels |
-| Mathematical/input tests | 12 tests pass under normal Python and `python -O`, including exhaustive small-case label completions for sharp bounds and shared-U cancellation |
-| Documentation | Relative links resolve; short report, precision threshold and comparison directions agree with the result tables |
-| Figure | Generated from CSV tables, source hashes recorded, visual inspection completed |
+| 原项目保留 | 246 个已跟踪 / 暂存文件的 SHA-256、原 HEAD 和暂存状态保持一致 |
+| 原冻结版本 | 原冻结清单中 72 项均匹配 |
+| 原始 BEIR 数据 | 语料、查询和 qrels 的 SHA-256 匹配；原语料重新生成相同的文本无关元数据 |
+| 排名输入 | 12 个全查询配置、8 个五查询配置、2 个非空摘要条件，共 740,000 个保存位置 |
+| 干净目录复算 | 14 个基线深入分析文件和 20 个全配置 / 阶段比较文件，共 34 个 CSV/JSON 逐字节一致 |
+| 历史数值对应 | 3,895 行参考值中的 10,274 项数字比较一致 |
+| 非空摘要导出 | 400 个查询 / 深度覆盖单元与保存的结果一致 |
+| 程序与数学语义 | 21 项测试在普通和优化模式下均通过；覆盖共享 U 抵消、可穷举标签补全、MMR 次序、随机空分数、集合保持和输入检查 |
+| 排名生成代码 | 10 个原始实现文件通过语法检查及计算语法树对照；来源和发布文件分别保存哈希 |
+| 研究正文 | 12 个配置的正文指标、配对界限、摘要条件与清单计数核对一致 |
+| 图表 | 两张图分别展示 12 配置比较和三基线深入分析；从 CSV 生成并保存来源哈希，已检查显示效果 |
+| 文档 | 验证入口检查公开 Markdown 的相对链接 |
 
-Local core verification was exercised with Python **3.9.6** and **3.11.15**.
-The core path needs only the standard library. Optional plotting used
-matplotlib **3.11.1**, with the version and source table hashes in
-`figures/figure_sources.json`.
-
-Run the checks with:
+我使用 Python **3.9.6** 和 **3.11.15** 执行离线复算。
+核心计算只使用标准库；图表使用 matplotlib **3.11.1**，具体来源表及版本保存在
+[figure_sources.json](../figures/figure_sources.json)。
 
 ```bash
 python3 scripts/verify_release.py
 ```
 
-The command reads the release manifest, then writes only to an isolated
-temporary output directory; it does not update expected values or waive failed
-checks. For the local full corpus, `python3 scripts/fetch_corpus.py --verify-only`
-also verifies its original hashes and regenerated metadata. The optional import
-script converted trusted original local numpy caches; it is not part of normal
-offline reproduction.
+该入口检查发布清单，在临时目录重算并比较全部 34 个结果文件，再执行数字
+对照、测试、文档链接和图表来源检查。它保留已有参考值和结果表，便于直接
+识别所运行版本与所复算内容。
 
-The public Git export contains the same small inputs and verification scripts;
-it excludes original article text, model weights, local historical copies,
-virtual environments and machine-specific paths. `.gitattributes` preserves
-exact artifact bytes across checkout platforms. The new GitHub workflow is
-prepared but has not run remotely; its outcome can only be observed after an
-upload. The current work does not provide a new cold-start retrieval run,
-medical relevance labels, external peer review, or an ACM badge.
+在已有原始语料的本地环境，我还运行：
 
+```bash
+python3 scripts/fetch_corpus.py --verify-only
+```
+
+我把验证范围落实为固定输入复算、历史数字对应和文件完整性。原始排名生成代码
+另见[实现说明](../retrieval_source/README.md)，其中记录模型依赖、原始配置与来源。
+本次完整重算的起点是发布的保存排名；模型推理阶段以原先保存的运行结果为依据。
+
+我准备了 GitHub Actions，它会在上传后的 push、pull request 或手动触发时执行
+相同验证入口。当前记录是本地实际运行结果，远程执行结果由上传后的工作流记录。
+公开包保留脚本、通用输入、结果、图和版本清单；本地另保存原始全文与历史备份。

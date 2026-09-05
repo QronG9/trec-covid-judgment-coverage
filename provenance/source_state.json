@@ -1,11 +1,10 @@
 {
   "source_head": "e5d96e11b5b282998a509580be625099f86a70f4",
-  "audit_target": "6a7415f",
-  "source_status_before": "A  AUDIT_CLAIMS.csv\nA  AUDIT_METHOD_DIFFERENCES.md\nA  AUDIT_NUMERIC_REPRODUCTION.csv\nA  AUDIT_REFERENCES.csv\nA  THIRD_PARTY_AUDIT_REPORT.md\nA  audit_evidence/README.md\nA  audit_evidence/abstract_stratified.csv\nA  audit_evidence/audit_summary.json\nA  audit_evidence/bm25_sensitivity.csv\nA  audit_evidence/checksums.csv\nA  audit_evidence/composition_independent.csv\nA  audit_evidence/coverage_independent.csv\nA  audit_evidence/delivery_validation.json\nA  audit_evidence/dense_audit.json\nA  audit_evidence/direct_candidate_sensitivity.csv\nA  audit_evidence/extra_audit.json\nA  audit_evidence/hole_summary.csv\nA  audit_evidence/independent_bm25.py\nA  audit_evidence/independent_dense.py\nA  audit_evidence/independent_extra.py\nA  audit_evidence/independent_numeric.py\nA  audit_evidence/ir_independent.csv\nA  audit_evidence/nist_comparison.json\nA  audit_evidence/nist_qrels_complete.txt\nA  audit_evidence/nonempty_abstract_reranked.csv\nA  audit_evidence/overlap_independent.csv\nA  audit_evidence/scorer_audit.json\nA  audit_evidence/sources.json\nA  audit_evidence/strata_independent.csv\n",
   "tags": {
     "stage1-50q-advisor-figure-v1": "4db50a0f8de13ea136b857d24caeececb6dec187",
     "stage1-50q-freeze-v1": "69487e9899298bfbc1947db3d91a96d9dacc7616",
     "stage1-50q-paper-freeze-v1": "64850847b652547e23c9ae2b2a897ca5ce6468cd",
     "stage1-retrieval-extension-v1": "e5d96e11b5b282998a509580be625099f86a70f4"
-  }
+  },
+  "release_scope": "12 full-query configurations, 8 pilot configurations, and 2 nonempty-abstract ranking conditions"
 }

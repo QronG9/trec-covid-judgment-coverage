@@ -3,6 +3,8 @@
   "source_table_sha256": {
     "coverage_summary.csv": "2dd84e2a1211082eec0733c7dd596bba8e6e1f865ad15da9b8bb1e39946cc2b4",
     "nonempty_coverage_summary.csv": "ba95f3343ae27d546c4e5a255ae5457e9d38ad733c70eefbbd40d8c0c98f38d9",
-    "paired_precision_bounds_summary.csv": "2b354494f09ef79f4e1b2a8bc0e45f0b7ddf1a4c3752d562955413d187f8204b"
+    "paired_precision_bounds_summary.csv": "2b354494f09ef79f4e1b2a8bc0e45f0b7ddf1a4c3752d562955413d187f8204b",
+    "extensions/coverage_summary.csv": "911e25b15314c3aa6f2e63db3c0811762c1527457330728083c4e4030efe8d71",
+    "extensions/observed_ir_summary.csv": "eccc6f36f564121b3f805ff8a389267efd89a8cc5c100a1b94996f5e05d38da8"
   }
 }

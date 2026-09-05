@@ -30,7 +30,7 @@ def main():
     bound_lookup = {(r["method_a"], r["method_b"]): r for r in bounds if r["k"] == "20" and r["label_rule"] == "strict_eq2"}
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 10,
                          "axes.spines.top": False, "axes.spines.right": False,
-                         "svg.hashsalt": "trec-covid-judgment-coverage-v1"})
+                         "svg.hashsalt": "trec-covid-judgment-coverage-v2"})
     fig, axes = plt.subplots(1, 3, figsize=(13.6, 4.6), gridspec_kw={"width_ratios": [1, 1.05, 1.45]})
     colors = ["#37688C", "#D48135", "#3D8471"]
     methods = ["bm25", "mpnet", "direct"]
@@ -63,20 +63,56 @@ def main():
     ax.set_ylim(2.45, -.5)
     ax.set_xlabel("Mean P@20 difference (percentage points)")
     ax.set_title("C  Sharp bounds, fixed rankings", loc="left", fontweight="bold", pad=15)
-    fig.suptitle("TREC-COVID: a diagnostic of three saved retrieval runs", x=.045, ha="left", fontsize=15, fontweight="bold")
+    fig.suptitle("My TREC-COVID experiments: three baseline analyses", x=.045, ha="left", fontsize=15, fontweight="bold")
     fig.subplots_adjust(left=.065, right=.985, bottom=.32, top=.80, wspace=.72)
     b = axes[1].get_position()
     c = axes[2].get_position()
-    fig.text((b.x0 + b.x1) / 2, .06, "Changed eligible population;\nnot a causal attribution.", ha="center", fontsize=9, color="#555555")
-    fig.text((c.x0 + c.x1) / 2, .045, "QREL=2; existing labels retained.\nDots: observed differences.\nLines: attainable bounds, not confidence intervals.", ha="center", fontsize=8.5, color="#555555")
+    fig.text((b.x0 + b.x1) / 2, .06, "Comparison across two\neligible document populations.", ha="center", fontsize=9, color="#555555")
+    fig.text((c.x0 + c.x1) / 2, .045, "QREL=2; existing labels retained.\nDots: observed differences.\nLines: attainable label-completion bounds.", ha="center", fontsize=8.5, color="#555555")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     fig.savefig(args.output_dir / "research_summary.png", dpi=180, facecolor="white")
     fig.savefig(args.output_dir / "research_summary.svg", metadata={"Date": None}, facecolor="white")
     plt.close(fig)
+    full_coverage = read("extensions/coverage_summary.csv")
+    full_ir = read("extensions/observed_ir_summary.csv")
+    all_methods = ["bm25", "mpnet", "direct", "direct_minmax", "uniform_random",
+                   "direct_mmr", "direct_mmr_rerank", "query_expansion", "retrieval_random",
+                   "splade", "bge", "bm25_ce"]
+    names = ["BM25", "MPNet", "Direct: max-sum", "Direct: min-max", "Random Uniform",
+             "MMR: select 1000 from 5000", "MMR: reorder Direct 1000", "Query Expansion",
+             "Retrieval Random", "SPLADE", "BGE", "BM25 + CrossEncoder"]
+    holes = {r["method"]: float(r["mean_hole_fraction"]) * 100 for r in full_coverage if r["k"] == "20"}
+    precisions = {r["method"]: float(r["mean_observed_precision"]) * 100 for r in full_ir if r["label_rule"] == "strict_eq2"}
+    fig, axes = plt.subplots(1, 2, figsize=(12.5, 7.5), sharey=True)
+    ys = list(range(len(all_methods)))
+    for ax, values, color, title in zip(axes, [holes, precisions], ["#597D97", "#2B8275"],
+                                      ["A  Unjudged share: Hole@20", "B  Observed precision: P@20"]):
+        vals = [values[m] for m in all_methods]
+        ax.barh(ys, vals, color=color, height=.61)
+        ax.set_xlim(0, 111)
+        ax.set_xticks([0, 25, 50, 75, 100], ["0%", "25%", "50%", "75%", "100%"])
+        ax.set_axisbelow(True)
+        ax.grid(axis="x", color="#E8EDF0", lw=.8)
+        ax.set_title(title, loc="left", fontweight="bold", fontsize=12, pad=16)
+        ax.spines["left"].set_visible(False)
+        ax.tick_params(axis="y", length=0, pad=9)
+        for y, val in zip(ys, vals):
+            ax.text(val + 1.4, y, f"{val:.1f}%", va="center", fontsize=9)
+    axes[0].set_yticks(ys, names)
+    axes[0].invert_yaxis()
+    fig.suptitle("My TREC-COVID document-selection experiments", x=.035, y=.98,
+                 ha="left", fontsize=16, fontweight="bold")
+    fig.text(.035, .925, "12 configurations · 50 queries · fixed top-20 rankings", fontsize=11, color="#54616C")
+    fig.subplots_adjust(left=.245, right=.975, top=.83, bottom=.13, wspace=.17)
+    fig.text(.035, .052, "Both panels average the same 50 queries equally. Hole counts U; observed precision counts QREL=2.", fontsize=10, color="#54616C")
+    fig.text(.035, .025, "Saved ranks define MMR and random outputs. Full method settings and both relevance thresholds are provided in the repository.", fontsize=9, color="#54616C")
+    fig.savefig(args.output_dir / "method_comparison.png", dpi=180, facecolor="white")
+    fig.savefig(args.output_dir / "method_comparison.svg", metadata={"Date": None}, facecolor="white")
+    plt.close(fig)
     inputs = {name: hashlib.sha256((args.results_dir / name).read_bytes()).hexdigest()
-              for name in ["coverage_summary.csv", "nonempty_coverage_summary.csv", "paired_precision_bounds_summary.csv"]}
+              for name in ["coverage_summary.csv", "nonempty_coverage_summary.csv", "paired_precision_bounds_summary.csv", "extensions/coverage_summary.csv", "extensions/observed_ir_summary.csv"]}
     (args.output_dir / "figure_sources.json").write_text(json.dumps({"matplotlib_version": matplotlib.__version__, "source_table_sha256": inputs}, indent=2) + "\n")
-    print("Wrote research_summary.png, research_summary.svg and source hashes.")
+    print("Wrote two PNG/SVG figures and source table hashes.")
 
 
 if __name__ == "__main__":

@@ -1,37 +1,37 @@
-# GitHub 上传准备
+# 我的 GitHub 发布版本
 
-推荐仓库名：`trec-covid-judgment-coverage`。
+我将这套实验整理为 **v2.0.0**。推荐仓库名为 `trec-covid-judgment-coverage`。
 
-推荐简介：`Partial reimplementation and judgment-coverage diagnostic on BEIR TREC-COVID, with offline reproducible results and corrected claims.`
+仓库简介可用：`My TREC-COVID document-selection experiments: 12 configurations, pilot-to-full-query tracking, and offline reproducible evaluation.`
 
-本目录已准备独立 Git 历史、`main` 分支、v1.0.0 标签、README、研究短报告、
-勘误、许可及引用信息。当前尚未创建远程仓库或上传文件。
+这个版本包含我的第一人称研究报告、12 个完整 50 查询配置、8 个初始 5 查询
+配置、2 个非空摘要条件、原始标签、结果表、图、测试及来源记录。
 
-## 上传本地仓库
+## 发布步骤
 
-先在 GitHub 创建一个空仓库，并选择自己需要的可见性；不要让 GitHub 额外
-初始化 README、许可或 `.gitignore`。然后在本目录连接页面提供的仓库地址：
+我先在 GitHub 创建空仓库并选择可见性，然后在本地仓库根目录连接 GitHub
+提供的地址：
 
 ```bash
 git remote add origin <GitHub 提供的仓库地址>
 git push -u origin main
-git push origin v1.0.0
+git push origin v2.0.0
 ```
 
-这些命令只作为后续上传说明；本次整理没有执行远程创建或推送。
-`archive/local-original/`、全文语料、下载包和本地缓存均由 `.gitignore`
-排除。优先从本地 Git 仓库推送，确保只发布已经整理并验证的跟踪文件。
+这些是准备好的发布步骤；当前交付的是本地仓库和上传压缩包。
+本地仓库保留阶段历史，`git archive` 生成的
+`trec-covid-judgment-coverage-v2.0.0-github.zip` 只包含 v2.0.0 的公开文件。
 
-相邻目录提供的 `trec-covid-judgment-coverage-v1.0.0-github.zip` 是同一发布
-提交的 Git 文件归档，便于转交或下载；它不含 `.git`，也不含本地历史档案。
-不要把整个工作文件夹另行压缩后上传，以免混入本地保留材料。
+我使用 `.gitignore` 将本地历史备份、文章全文、向量缓存和虚拟环境留在本地。
+从 Git 推送或使用提供的上传包，可以获得同一组已验证的公开文件。
 
-## 版本说明
+## 我的版本摘要
 
-v1.0.0 固化三个方法的判断覆盖、无摘要描述与 eligibility 敏感性、共享 U 的
-配对 precision 界限，以及 492 对未判断清单。正文撤回未获证据支持的机制、
-模型家族、评价低估及下游扭曲主张。
+我从 5 个查询开始，扩展到 50 个查询，再比较融合、随机子集、MMR、查询扩展、
+learned sparse、第二个 dense 模型和 cross-encoder 重排。我分别记录判断覆盖、
+观察相关性指标、与 BM25 的集合重合及固定排名下的 precision 界限，并用两组
+保持候选集合的实验对照检查“选择集合”和“改变前缀顺序”的关系。
 
-GitHub Actions 配置为在后续推送和 pull request 时运行离线发布验证；首次
-远程运行的结果需上传后查看。这里不把尚未执行的云端检查称为已通过。
+GitHub Actions 在上传后的 push、pull request 和手动触发时执行结果复算。
+本地验证步骤及实际结果见 [RELEASE_VALIDATION](../provenance/RELEASE_VALIDATION.md)。
 

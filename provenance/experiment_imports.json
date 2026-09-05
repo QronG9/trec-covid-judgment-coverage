@@ -1,0 +1,174 @@
+{
+  "inputs_and_exports": [
+    {
+      "source_path": "cache/runs/direct_minmax.npz",
+      "source_sha256": "47c96a89fa55e1095804cb7926dd68df03d8fdf649c4a90a6d070aa0947a0b63",
+      "export_path": "data/runs/extensions/direct_minmax.tsv.gz",
+      "export_sha256": "6e4369a280bc7671755080b5d0a71640c4054a40c902f226a7ad6dc88abe379f",
+      "n_queries": 50,
+      "n_ranked_pairs": 50000,
+      "n_blank_scores": 0,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "cache/runs/random.npz",
+      "source_sha256": "75617356e70a7cdb8e2c76253cfb74b39eeeb959f85b32895d6b9376a6f1b011",
+      "export_path": "data/runs/extensions/uniform_random.tsv.gz",
+      "export_sha256": "648df297b540405871dd9759d58fb1161d6ae6fea0737c50d8f14a51fdc90220",
+      "n_queries": 50,
+      "n_ranked_pairs": 50000,
+      "n_blank_scores": 50000,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "extension_retrieval_methods/cache/runs/direct_mmr.npz",
+      "source_sha256": "6d509d669e7f4e5a44c40bb58f30d339fd9248c6ee753fd8047181c1640610d0",
+      "export_path": "data/runs/extensions/direct_mmr.tsv.gz",
+      "export_sha256": "90de80b9339b72705918da184209dc96fde90c33cb69973321d262a22154dc56",
+      "n_queries": 50,
+      "n_ranked_pairs": 50000,
+      "n_blank_scores": 0,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "extension_retrieval_methods/cache/runs/direct_mmr_rerank.npz",
+      "source_sha256": "e8ef4f00f80fe15559c5285bdcdd51b9da0fe29772b83e77bc18b334caec0fee",
+      "export_path": "data/runs/extensions/direct_mmr_rerank.tsv.gz",
+      "export_sha256": "2b7c330c52c225cc512253bf7814f465041960b79e548101ed5cef99561fda1e",
+      "n_queries": 50,
+      "n_ranked_pairs": 50000,
+      "n_blank_scores": 0,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "extension_retrieval_methods/cache/runs/qryexp.npz",
+      "source_sha256": "0c53c6d7c6ee9c05746285bdc07d053a1cdea2755463aca18dc850521342de6e",
+      "export_path": "data/runs/extensions/query_expansion.tsv.gz",
+      "export_sha256": "922d8b0fab88e918e2fcb96bb125418db982b241cf88abe4b6fee89ac64e0155",
+      "n_queries": 50,
+      "n_ranked_pairs": 50000,
+      "n_blank_scores": 0,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "extension_retrieval_methods/cache/runs/retrieval_random.npz",
+      "source_sha256": "db796f82f2d65ee8db12bc051105a1049430cb0ea19dfeb76fb4411b0d223e67",
+      "export_path": "data/runs/extensions/retrieval_random.tsv.gz",
+      "export_sha256": "2b1c7556a6ea6d2a4b13541b1fea19a9da051a34cbbadc12db569c311861943e",
+      "n_queries": 50,
+      "n_ranked_pairs": 50000,
+      "n_blank_scores": 0,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "extension_retrieval_methods/cache/runs/splade.npz",
+      "source_sha256": "7d267e92e6c011705335302e8b248ab8de99ed2f52f02bd7eb79cf7e548e5ac4",
+      "export_path": "data/runs/extensions/splade.tsv.gz",
+      "export_sha256": "81753895bf5c3cc6eb7b12eae011041ab4bdf13e8c5197b1b9dbe9332531ec5d",
+      "n_queries": 50,
+      "n_ranked_pairs": 50000,
+      "n_blank_scores": 0,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "extension_retrieval_methods/cache/runs/bge.npz",
+      "source_sha256": "e0d40254013340655ae7f7e8ec0eaaa60ca5bc5f4209e68b3e64cc5f641fc21e",
+      "export_path": "data/runs/extensions/bge.tsv.gz",
+      "export_sha256": "0c27ed80ac0595aaf90dc0a7bb57c039a0eb6ac287e319afad5f81dc42cd1c89",
+      "n_queries": 50,
+      "n_ranked_pairs": 50000,
+      "n_blank_scores": 0,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "extension_retrieval_methods/cache/runs/bm25_ce.npz",
+      "source_sha256": "ef7399aa8a140a8f8fcd143a3247bead5b505a75562726307c87f61e8556dbff",
+      "export_path": "data/runs/extensions/bm25_ce.tsv.gz",
+      "export_sha256": "f6f0f522c9881087a281ae0cb6f34a3e2da7f53dd3a31566a90b3ab826d503fd",
+      "n_queries": 50,
+      "n_ranked_pairs": 50000,
+      "n_blank_scores": 0,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "cache/runs/bm25.npz",
+      "source_sha256": "81c345611cc9fbd0900233dfa8e2423ab09273a814dd241befcc59b1c4d61956",
+      "export_path": "data/runs/pilot/bm25.tsv.gz",
+      "export_sha256": "f95df032f97eaeee6dac9be296e19446b16d31648622b44dfafee8e911247bf2",
+      "n_queries": 5,
+      "n_ranked_pairs": 5000,
+      "n_blank_scores": 0,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "cache/runs/sbert.npz",
+      "source_sha256": "6c9b82e055867b979c78144284f29e57b0184872415b34594d2663f8fc37409f",
+      "export_path": "data/runs/pilot/mpnet.tsv.gz",
+      "export_sha256": "16b7fe1443e8a6c8904147b2cc21be7e9a24db2ef7ae0edbd9c3c2a131d3a15b",
+      "n_queries": 5,
+      "n_ranked_pairs": 5000,
+      "n_blank_scores": 0,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "cache/runs/direct.npz",
+      "source_sha256": "53c92a03919eed23361f2be1925603dfb23adf51861ef7658985a1888bc8d049",
+      "export_path": "data/runs/pilot/direct.tsv.gz",
+      "export_sha256": "096473aa0b2f99fff8b6a022e263cf18a859b0afdbff310818de0dded4d0a9b0",
+      "n_queries": 5,
+      "n_ranked_pairs": 5000,
+      "n_blank_scores": 0,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "cache/runs/random.npz",
+      "source_sha256": "75617356e70a7cdb8e2c76253cfb74b39eeeb959f85b32895d6b9376a6f1b011",
+      "export_path": "data/runs/pilot/uniform_random.tsv.gz",
+      "export_sha256": "acec6d743e5983f759980ac757761a347a94f7f8b76abdc9dd83b1422e777b6a",
+      "n_queries": 5,
+      "n_ranked_pairs": 5000,
+      "n_blank_scores": 5000,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "cache/runs/direct_minmax.npz",
+      "source_sha256": "47c96a89fa55e1095804cb7926dd68df03d8fdf649c4a90a6d070aa0947a0b63",
+      "export_path": "data/runs/pilot/direct_minmax.tsv.gz",
+      "export_sha256": "9efccfdad9fab6a3fdb936fc25c30deb7b7f43c187e3ae0199aaa27f2e2d1f97",
+      "n_queries": 5,
+      "n_ranked_pairs": 5000,
+      "n_blank_scores": 0,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "cache/runs/direct_mmr.npz",
+      "source_sha256": "443a98480f59e4b832a6b63fb30cd27c904011a648601245a23831f755c77567",
+      "export_path": "data/runs/pilot/direct_mmr.tsv.gz",
+      "export_sha256": "138aa607257e53940c1ea5826c25334b2f62f4b7210a40305e1c8ea54e1322fa",
+      "n_queries": 5,
+      "n_ranked_pairs": 5000,
+      "n_blank_scores": 0,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "cache/runs/qryexp.npz",
+      "source_sha256": "ecf78b2c47e9584b716966a87b63c21c8ff43851d7fe00998adae2b4b95a2754",
+      "export_path": "data/runs/pilot/query_expansion.tsv.gz",
+      "export_sha256": "9304b661ce902530b8d02a968d8c6d9c461296012bab85d81bc0d5d6953153b9",
+      "n_queries": 5,
+      "n_ranked_pairs": 5000,
+      "n_blank_scores": 0,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    },
+    {
+      "source_path": "cache/runs/retrieval_random.npz",
+      "source_sha256": "ea92a0744d6a0d66beadc59f8a4c1f315f46c9cb778edf9cc01b74f8d65f93a8",
+      "export_path": "data/runs/pilot/retrieval_random.tsv.gz",
+      "export_sha256": "77e133eb120eb182b180a3fc954c51b247efcd629af46edd3c6dcad3def93c77",
+      "n_queries": 5,
+      "n_ranked_pairs": 5000,
+      "n_blank_scores": 0,
+      "score_conversion": "Original NaN for unscored random draws becomes empty; finite scores use 17 significant digits; stored rank order retained."
+    }
+  ]
+}

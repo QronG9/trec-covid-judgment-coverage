@@ -1,0 +1,17 @@
+method,label_rule,precision_k,recall_k,n_queries,n_queries_with_relevant_qrels,mean_observed_precision,mean_observed_recall,n_observed_relevant_at_precision_k,n_observed_relevant_at_recall_k,n_qrel_relevant
+bm25,strict_eq2,20,1000,5,5,0.4,0.506095608242,40,616,1178
+bm25,relaxed_ge1,20,1000,5,5,0.61,0.463519894382,61,1140,2480
+mpnet,strict_eq2,20,1000,5,5,0.25,0.347959813415,25,453,1178
+mpnet,relaxed_ge1,20,1000,5,5,0.5,0.311918591034,50,831,2480
+direct,strict_eq2,20,1000,5,5,0.47,0.564939127226,47,664,1178
+direct,relaxed_ge1,20,1000,5,5,0.72,0.518583483097,72,1248,2480
+uniform_random,strict_eq2,20,1000,5,5,0,0.00477684066551,0,6,1178
+uniform_random,relaxed_ge1,20,1000,5,5,0,0.00631632875667,0,19,2480
+direct_minmax,strict_eq2,20,1000,5,5,0.48,0.56711304027,48,665,1178
+direct_minmax,relaxed_ge1,20,1000,5,5,0.72,0.519177312791,72,1251,2480
+direct_mmr,strict_eq2,20,1000,5,5,0.02,0.171950398817,2,191,1178
+direct_mmr,relaxed_ge1,20,1000,5,5,0.06,0.160485074062,6,374,2480
+query_expansion,strict_eq2,20,1000,5,5,0.47,0.524375818634,47,595,1178
+query_expansion,relaxed_ge1,20,1000,5,5,0.74,0.483635953529,74,1142,2480
+retrieval_random,strict_eq2,20,1000,5,5,0.3,0.144642739368,30,189,1178
+retrieval_random,relaxed_ge1,20,1000,5,5,0.59,0.145034376128,59,389,2480

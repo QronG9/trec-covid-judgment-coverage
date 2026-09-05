@@ -1,0 +1,355 @@
+{
+  "source": "source paper App. B.5/B.6/B.7 via frozen src/retrieval.py",
+  "n_queries": 50,
+  "depth": 1000,
+  "seed": 42,
+  "seconds": 10.9,
+  "keywords_per_query": {
+    "1": [
+      "origin covid-19",
+      "origin",
+      "covid-19"
+    ],
+    "2": [
+      "coronavirus respond",
+      "changes weather",
+      "respond changes",
+      "weather",
+      "changes"
+    ],
+    "3": [
+      "sars-cov2 infected",
+      "cross protection",
+      "people develop",
+      "develop immunity",
+      "possible"
+    ],
+    "4": [
+      "death covid-19",
+      "causes",
+      "causes death",
+      "death",
+      "covid-19"
+    ],
+    "5": [
+      "sars-cov-2 animal",
+      "drugs",
+      "active",
+      "animal",
+      "studies"
+    ],
+    "6": [
+      "testing covid-19",
+      "types rapid",
+      "developed",
+      "rapid testing",
+      "covid-19 developed"
+    ],
+    "7": [
+      "antibodies coronavirus",
+      "serological tests",
+      "detect",
+      "detect antibodies",
+      "tests"
+    ],
+    "8": [
+      "incidence covid-19",
+      "testing availability",
+      "underreporting true",
+      "led",
+      "lack"
+    ],
+    "9": [
+      "covid-19 affected",
+      "canada",
+      "affected canada",
+      "affected",
+      "covid-19"
+    ],
+    "10": [
+      "spread covid-19",
+      "social distancing",
+      "impact slowing",
+      "slowing spread",
+      "distancing impact"
+    ],
+    "11": [
+      "triaging patients",
+      "coronavirus",
+      "guidelines",
+      "patients infected",
+      "guidelines triaging"
+    ],
+    "12": [
+      "maintaining quarantine",
+      "practices",
+      "best",
+      "home",
+      "home maintaining"
+    ],
+    "13": [
+      "routes coronavirus",
+      "transmission",
+      "routes",
+      "transmission routes",
+      "coronavirus"
+    ],
+    "14": [
+      "covid-19 super",
+      "spreaders",
+      "evidence",
+      "related",
+      "super"
+    ],
+    "15": [
+      "long coronavirus",
+      "outside body",
+      "live",
+      "long",
+      "live outside"
+    ],
+    "16": [
+      "long coronavirus",
+      "surfaces",
+      "remain stable",
+      "long",
+      "remain"
+    ],
+    "17": [
+      "available coronavirus",
+      "clinical trials",
+      "available",
+      "trials available",
+      "clinical"
+    ],
+    "18": [
+      "best masks",
+      "infection covid-19",
+      "preventing",
+      "best",
+      "preventing infection"
+    ],
+    "19": [
+      "hand sanitizer",
+      "destroy covid-19",
+      "needed",
+      "type",
+      "hand"
+    ],
+    "20": [
+      "taking angiotensin-converting",
+      "risk covid-19",
+      "ace",
+      "patients",
+      "enzyme"
+    ],
+    "21": [
+      "mortality rates",
+      "specific",
+      "overall",
+      "populations",
+      "rates"
+    ],
+    "22": [
+      "cardiac complications",
+      "covid-19",
+      "likely",
+      "likely patients",
+      "complications likely"
+    ],
+    "23": [
+      "associated hypertension",
+      "kinds",
+      "covid-19",
+      "related",
+      "complications"
+    ],
+    "24": [
+      "associated diabetes",
+      "kinds",
+      "covid-19",
+      "complications",
+      "related"
+    ],
+    "25": [
+      "2019-ncov infection",
+      "biomarkers predict",
+      "course",
+      "clinical",
+      "predict severe"
+    ],
+    "26": [
+      "symptoms covid-19",
+      "initial",
+      "initial symptoms",
+      "covid-19",
+      "symptoms"
+    ],
+    "27": [
+      "covid-19 asymptomatic",
+      "known",
+      "infected",
+      "asymptomatic",
+      "covid-19"
+    ],
+    "28": [
+      "hydroxychloroquine treating",
+      "evidence",
+      "covid-19",
+      "value",
+      "treating"
+    ],
+    "29": [
+      "sars-cov-2 proteins-human",
+      "approved drugs",
+      "indicate potential",
+      "based",
+      "proteins interactions"
+    ],
+    "30": [
+      "remdesivir effective",
+      "covid-19",
+      "effective",
+      "treatment",
+      "treatment covid-19"
+    ],
+    "31": [
+      "coronavirus differ",
+      "seasonal",
+      "flu",
+      "differ",
+      "seasonal flu"
+    ],
+    "32": [
+      "sars-cov-2 subtypes",
+      "subtypes",
+      "sars-cov-2"
+    ],
+    "33": [
+      "vaccine candidates",
+      "tested",
+      "covid-19",
+      "candidates",
+      "tested covid-19"
+    ],
+    "34": [
+      "longer-term complications",
+      "recover covid-19",
+      "recover",
+      "longer-term",
+      "covid-19"
+    ],
+    "35": [
+      "datasets available",
+      "covid-19",
+      "public",
+      "related",
+      "new"
+    ],
+    "36": [
+      "structure sars-cov-2",
+      "spike",
+      "protein",
+      "structure",
+      "protein structure"
+    ],
+    "37": [
+      "sars-cov-2 genome",
+      "result phylogenetic",
+      "sequence",
+      "analysis",
+      "genome"
+    ],
+    "38": [
+      "pathogenesis covid-19",
+      "response",
+      "inflammatory",
+      "cases",
+      "response pathogenesis"
+    ],
+    "39": [
+      "cytokine storm",
+      "mechanism",
+      "syndrome covid-19",
+      "storm",
+      "mechanism cytokine"
+    ],
+    "40": [
+      "mutations sars-cov-2",
+      "often",
+      "genome",
+      "often mutations",
+      "occur"
+    ],
+    "41": [
+      "among african-americans",
+      "covid-19",
+      "differ rest",
+      "impacts",
+      "u population"
+    ],
+    "42": [
+      "covid-19 prevention",
+      "vitamin impact",
+      "treatment",
+      "prevention",
+      "impact"
+    ],
+    "43": [
+      "covid-19 pandemic",
+      "violent crimes",
+      "impacted",
+      "including",
+      "society"
+    ],
+    "44": [
+      "masks",
+      "spread covid-19",
+      "much impact",
+      "preventing",
+      "spread"
+    ],
+    "45": [
+      "covid-19 pandemic",
+      "mental",
+      "impacted",
+      "health",
+      "mental health"
+    ],
+    "46": [
+      "dexamethasone treatment",
+      "evidence",
+      "covid-19",
+      "treatment",
+      "treatment covid-19"
+    ],
+    "47": [
+      "covid-19",
+      "outcomes children",
+      "contract",
+      "health",
+      "children contract"
+    ],
+    "48": [
+      "re-opening schools",
+      "midst covid-19",
+      "benefits risks",
+      "risks re-opening",
+      "midst"
+    ],
+    "49": [
+      "recover covid-19",
+      "antibody levels",
+      "including",
+      "show sufficient",
+      "response"
+    ],
+    "50": [
+      "vaccine sars-cov-2",
+      "known mrna",
+      "known",
+      "virus",
+      "mrna vaccine"
+    ]
+  }
+}

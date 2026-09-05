@@ -1,7 +1,7 @@
 License scope
 =============
 
-The original code in scripts/, tests/, and workflow configuration is provided
+The original code in scripts/, tests/, retrieval_source/, and workflow configuration is provided
 under the MIT license reproduced in LICENSE-CODE.txt.
 
 The research note, documentation, derived corpus metadata, ranking tables,

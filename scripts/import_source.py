@@ -46,7 +46,7 @@ def export_metadata(corpus_path, output):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, required=True, help="Original stage1_pooling_bias directory")
-    parser.add_argument("--audit-workdir", type=Path, help="Original audit temporary scores and query embeddings")
+    parser.add_argument("--score-workdir", type=Path, help="Saved full-corpus scores and query embeddings")
     parser.add_argument("--output-root", type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
     import numpy as np
@@ -82,13 +82,13 @@ def main():
                 for rank, (idx, score) in enumerate(zip(indices, scores), 1))
         write_gzip_csv(data / "runs" / (name + ".tsv.gz"), columns, rows, "\t")
 
-    if args.audit_workdir:
-        audit = args.audit_workdir.resolve()
-        score_path = audit / "bm25_all_scores.npy"
-        query_path = audit / "query_embeddings_cpu.npy"
+    if args.score_workdir:
+        score_dir = args.score_workdir.resolve()
+        score_path = score_dir / "bm25_all_scores.npy"
+        query_path = score_dir / "query_embeddings_cpu.npy"
         embedding_path = source / "cache/doc_emb_mpnet.npy"
-        for path, label in [(score_path, "audit_temporary/bm25_all_scores.npy"),
-                            (query_path, "audit_temporary/query_embeddings_cpu.npy"),
+        for path, label in [(score_path, "representation_scores/bm25_all_scores.npy"),
+                            (query_path, "representation_scores/query_embeddings_cpu.npy"),
                             (embedding_path, "stage1_pooling_bias/cache/doc_emb_mpnet.npy")]:
             record(path, label)
         scores = np.load(score_path, mmap_mode="r")
@@ -109,7 +109,7 @@ def main():
     (provenance / "import_inputs.json").write_text(json.dumps({
         "format_version": 1,
         "description": "Input hashes for converting original local artifacts into portable rankings and metadata. No new model was trained or new relevance label assigned.",
-        "nonempty_rankings": "Original audit full-corpus BM25 scores and CPU query vectors with original document vectors; original score order restricted to documents with nonempty abstracts, tie-break by corpus index.",
+        "nonempty_rankings": "Saved full-corpus BM25 scores and CPU query vectors with original document vectors; original score order restricted to documents with nonempty abstracts, tie-break by corpus index.",
         "inputs": inputs,
     }, indent=2) + "\n", encoding="utf-8")
     print("Exported raw labels, queries, corpus metadata and portable rankings.")

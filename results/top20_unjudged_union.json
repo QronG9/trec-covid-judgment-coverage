@@ -31,5 +31,5 @@
     "bm25__mpnet": 1,
     "mpnet__direct": 16
   },
-  "scope": "Union of unjudged query-document pairs in the three saved top-20 rankings; diagnostic frame only, not a validated annotation protocol."
+  "scope": "I list the union of unjudged query-document pairs in the three saved baseline top-20 rankings, with existing label status and method ranks."
 }
