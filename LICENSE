@@ -1,0 +1,23 @@
+License scope
+=============
+
+The original code in scripts/, tests/, and workflow configuration is provided
+under the MIT license reproduced in LICENSE-CODE.txt.
+
+The research note, documentation, derived corpus metadata, ranking tables,
+reference tables, and analysis results are distributed under Creative Commons
+Attribution-ShareAlike 4.0 International (CC BY-SA 4.0):
+https://creativecommons.org/licenses/by-sa/4.0/
+Full legal code: https://creativecommons.org/licenses/by-sa/4.0/legalcode.en
+
+Copyright (c) 2026 QronG9 for original project material. Attribution to the
+source research, BEIR, TREC-COVID, and CORD-19 is documented in
+data/README.md and docs/RESEARCH_NOTE.md.
+
+Bundled BEIR query and qrel files retain their source dataset terms and
+attribution. They are not MIT-licensed by this repository. The BEIR dataset
+card identifies its license as CC BY-SA 4.0. This release does not relicense
+the underlying scientific articles or distribute their title/abstract corpus,
+full article text, pretrained model weights, or the private historical archive.
+Third-party rights remain with their respective holders.
+

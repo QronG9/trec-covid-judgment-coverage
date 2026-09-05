@@ -1,0 +1,59 @@
+{
+  "abstract_strata_convention": "Pooled retrieved query-document pairs within each abstract-presence stratum; descriptive associations, not causal effects.",
+  "bound_assumptions": "Fixed rankings; all existing 0/1/2 labels retained; each unjudged query-document pair may have either binary relevance value under the chosen threshold; values are shared across methods, independent across pairs.",
+  "input_sha256": {
+    "corpus_metadata.csv.gz": "be3d30e52f72f62dbbcc3ed566df92f5797970aec92bf4bd4c5f1da0bc185df3",
+    "runs/bm25.tsv.gz": "de3589bc156fca644483709bf79bbf1a5c060272af283a8b1991836db1d2b934",
+    "runs/direct.tsv.gz": "4b1b16e305c9745d9b17b1be390c7be5c40375e584bfdc2a57fdb922ba3ea21d",
+    "runs/mpnet.tsv.gz": "86fb2ba7f79f3becb91a8c116000ee9eb5d18eb92053d2d5d9d2362b885c2aa8",
+    "runs/nonempty_abstract/bm25.tsv.gz": "ab2f08e2bed250c0c394dc1f0bca632869fc2b02c71736fb46cfe2a0176c7f2a",
+    "runs/nonempty_abstract/mpnet.tsv.gz": "58aa590d348091007bf32120fde65aed9ed7018096f2a096527e59b8c3f1cf0f",
+    "trec-covid/qrels/test.tsv": "10669ab7d526cb04f52079139fd88c3d467a0776441b046567f540582798982b",
+    "trec-covid/queries.jsonl": "78f4b76bfef251a0baf37a6cea5c4ba8376cb4536c34635709aaa4a2783b208c"
+  },
+  "judged_labels": [
+    0,
+    1,
+    2
+  ],
+  "n_corpus_documents": 171332,
+  "n_documents_with_abstract": 129192,
+  "n_documents_with_title": 171325,
+  "n_documents_without_abstract": 42140,
+  "n_judged_pairs": 66334,
+  "n_qrel_rows": 66336,
+  "n_queries": 50,
+  "n_unjudged_pairs_in_full_query_corpus_product": 8500266,
+  "nonempty_abstract_run_rows": {
+    "bm25": 50000,
+    "mpnet": 50000
+  },
+  "precision_convention": "Observed precision divides known relevant count by k; unjudged contributes zero to this conventional observed score, without asserting nonrelevance.",
+  "qrel_label_counts": {
+    "-1": 2,
+    "0": 41661,
+    "1": 10456,
+    "2": 14217
+  },
+  "run_rows": {
+    "bm25": 50000,
+    "direct": 50000,
+    "mpnet": 50000
+  },
+  "schema_version": 1,
+  "scope": "Descriptive reanalysis of fixed saved rankings; this command does not rerun retrieval.",
+  "unjudged": "absent qrel or explicit label -1",
+  "validation": {
+    "allowed_qrel_labels": true,
+    "ascending_corpus_index_for_exact_ties": true,
+    "contiguous_ranks": true,
+    "equal_query_sets": true,
+    "known_ids": true,
+    "nonincreasing_finite_scores": true,
+    "run_depth": 1000,
+    "unique_corpus_ids_and_indices": true,
+    "unique_qrel_pairs": true,
+    "unique_query_ids": true,
+    "unique_run_pairs": true
+  }
+}

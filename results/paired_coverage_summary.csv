@@ -1,0 +1,13 @@
+method_a,method_b,k,n_queries,mean_judged_fraction_delta_a_minus_b,mean_hole_fraction_delta_a_minus_b,n_a_higher,n_tied,n_b_higher,n_a_higher_hole,n_tied_hole,n_b_higher_hole
+mpnet,bm25,20,50,-0.331,0.331,3,8,39,39,8,3
+mpnet,bm25,50,50,-0.3104,0.3104,2,4,44,44,4,2
+mpnet,bm25,100,50,-0.2958,0.2958,4,0,46,46,0,4
+mpnet,bm25,1000,50,-0.1077,0.1077,6,0,44,44,0,6
+direct,bm25,20,50,0.018,-0.018,18,25,7,7,25,18
+direct,bm25,50,50,0.05,-0.05,32,9,9,9,9,32
+direct,bm25,100,50,0.0496,-0.0496,32,4,14,14,4,32
+direct,bm25,1000,50,0.03216,-0.03216,40,1,9,9,1,40
+mpnet,direct,20,50,-0.349,0.349,0,9,41,41,9,0
+mpnet,direct,50,50,-0.3604,0.3604,0,2,48,48,2,0
+mpnet,direct,100,50,-0.3454,0.3454,0,1,49,49,1,0
+mpnet,direct,1000,50,-0.13986,0.13986,0,0,50,50,0,0

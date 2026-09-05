@@ -1,0 +1,35 @@
+{
+  "by_exact_method_combination": {
+    "bm25": 51,
+    "bm25;direct": 20,
+    "bm25;mpnet;direct": 1,
+    "direct": 18,
+    "mpnet": 387,
+    "mpnet;direct": 15
+  },
+  "by_method": {
+    "bm25": 72,
+    "direct": 54,
+    "mpnet": 403
+  },
+  "by_number_of_methods": {
+    "1": 456,
+    "2": 35,
+    "3": 1
+  },
+  "n_all_top20_union_pairs": 2170,
+  "n_empty_abstract_pairs": 372,
+  "n_explicit_minus1_pairs": 0,
+  "n_judged_controls": 0,
+  "n_queries": 44,
+  "n_queries_with_unjudged": 44,
+  "n_total_queries": 50,
+  "n_unique_documents": 461,
+  "n_unique_query_document_pairs": 492,
+  "pairwise_intersections": {
+    "bm25__direct": 21,
+    "bm25__mpnet": 1,
+    "mpnet__direct": 16
+  },
+  "scope": "Union of unjudged query-document pairs in the three saved top-20 rankings; diagnostic frame only, not a validated annotation protocol."
+}

@@ -1,0 +1,13 @@
+method_a,method_b,k,label_rule,n_queries,mean_observed_delta,mean_lower_bound,mean_upper_bound,total_unjudged_a,total_unjudged_b,total_unjudged_shared,total_unjudged_a_only,total_unjudged_b_only,n_queries_a_guaranteed_higher,n_queries_b_guaranteed_higher,n_queries_tie_possible
+mpnet,bm25,20,strict_eq2,50,-0.061,-0.132,0.341,403,72,1,402,71,13,3,34
+mpnet,bm25,20,relaxed_ge1,50,-0.116,-0.187,0.286,403,72,1,402,71,10,3,37
+mpnet,bm25,100,strict_eq2,50,-0.0228,-0.2138,0.464,2459,980,25,2434,955,7,0,43
+mpnet,bm25,100,relaxed_ge1,50,-0.0882,-0.2792,0.3986,2459,980,25,2434,955,4,2,44
+direct,bm25,20,strict_eq2,50,0.143,0.092,0.176,54,72,21,33,51,40,3,7
+direct,bm25,20,relaxed_ge1,50,0.155,0.104,0.188,54,72,21,33,51,33,2,15
+direct,bm25,100,strict_eq2,50,0.1176,-0.0254,0.211,732,980,265,467,715,20,1,29
+direct,bm25,100,relaxed_ge1,50,0.1316,-0.0114,0.225,732,980,265,467,715,22,1,27
+mpnet,direct,20,strict_eq2,50,-0.204,-0.242,0.183,403,54,16,387,38,5,14,31
+mpnet,direct,20,relaxed_ge1,50,-0.271,-0.309,0.116,403,54,16,387,38,3,5,42
+mpnet,direct,100,strict_eq2,50,-0.1404,-0.2394,0.304,2459,732,237,2222,495,2,1,47
+mpnet,direct,100,relaxed_ge1,50,-0.2198,-0.3188,0.2246,2459,732,237,2222,495,2,4,44

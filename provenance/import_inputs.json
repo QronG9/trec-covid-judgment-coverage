@@ -1,0 +1,57 @@
+{
+  "format_version": 1,
+  "description": "Input hashes for converting original local artifacts into portable rankings and metadata. No new model was trained or new relevance label assigned.",
+  "nonempty_rankings": "Original audit full-corpus BM25 scores and CPU query vectors with original document vectors; original score order restricted to documents with nonempty abstracts, tie-break by corpus index.",
+  "inputs": [
+    {
+      "source_artifact": "trec-covid/corpus.jsonl",
+      "bytes": 221370065,
+      "sha256": "aded69896598665082316d00df487d22212cc5a8611db05db34eb40d04ed00d7"
+    },
+    {
+      "source_artifact": "trec-covid/queries.jsonl",
+      "bytes": 16552,
+      "sha256": "78f4b76bfef251a0baf37a6cea5c4ba8376cb4536c34635709aaa4a2783b208c"
+    },
+    {
+      "source_artifact": "trec-covid/qrels/test.tsv",
+      "bytes": 980831,
+      "sha256": "10669ab7d526cb04f52079139fd88c3d467a0776441b046567f540582798982b"
+    },
+    {
+      "source_artifact": "stage1_pooling_bias/cache/doc_ids.npy",
+      "bytes": 1885526,
+      "sha256": "e6a07ab61b0244e1ab8fcc48480a864f3d286d6ba2a150bb21e8eee089f984dc"
+    },
+    {
+      "source_artifact": "stage1_pooling_bias/cache/runs/bm25.npz",
+      "bytes": 435048,
+      "sha256": "81c345611cc9fbd0900233dfa8e2423ab09273a814dd241befcc59b1c4d61956"
+    },
+    {
+      "source_artifact": "stage1_pooling_bias/cache/runs/sbert.npz",
+      "bytes": 298479,
+      "sha256": "6c9b82e055867b979c78144284f29e57b0184872415b34594d2663f8fc37409f"
+    },
+    {
+      "source_artifact": "stage1_pooling_bias/cache/runs/direct.npz",
+      "bytes": 492169,
+      "sha256": "53c92a03919eed23361f2be1925603dfb23adf51861ef7658985a1888bc8d049"
+    },
+    {
+      "source_artifact": "audit_temporary/bm25_all_scores.npy",
+      "bytes": 68532928,
+      "sha256": "46878eab7e3664540b44a544e5678b218cde2989f7a715779704db70141689ba"
+    },
+    {
+      "source_artifact": "audit_temporary/query_embeddings_cpu.npy",
+      "bytes": 153728,
+      "sha256": "b1d0003d93ec3d12caf1d00adbcbaba7ab89d1bcde283ffbf6e920972a60244f"
+    },
+    {
+      "source_artifact": "stage1_pooling_bias/cache/doc_emb_mpnet.npy",
+      "bytes": 526332032,
+      "sha256": "b1217289c1420d618ccd9784066b5d4125a9c9be3f7be9b8ce003a862879b503"
+    }
+  ]
+}

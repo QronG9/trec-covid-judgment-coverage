@@ -1,0 +1,8 @@
+{
+  "matplotlib_version": "3.11.1",
+  "source_table_sha256": {
+    "coverage_summary.csv": "2dd84e2a1211082eec0733c7dd596bba8e6e1f865ad15da9b8bb1e39946cc2b4",
+    "nonempty_coverage_summary.csv": "ba95f3343ae27d546c4e5a255ae5457e9d38ad733c70eefbbd40d8c0c98f38d9",
+    "paired_precision_bounds_summary.csv": "2b354494f09ef79f4e1b2a8bc0e45f0b7ddf1a4c3752d562955413d187f8204b"
+  }
+}

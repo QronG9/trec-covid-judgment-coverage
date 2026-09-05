@@ -1,0 +1,16 @@
+# Local preservation copies are intentionally outside the public release.
+archive/local-original/
+# Source literature text and large downloadable/model assets.
+data/trec-covid/corpus.jsonl
+data/downloads/
+data/models/
+data/*.zip
+.venv/
+__pycache__/
+*.py[cod]
+.DS_Store
+.pytest_cache/
+.matplotlib/
+build/
+dist/
+

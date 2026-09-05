@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If using this research artifact, cite this version and the original BEIR/TREC-COVID sources listed in data/README.md."
+type: software
+title: "TREC-COVID Document Selection: Partial Reimplementation and Judgment-Coverage Diagnostic"
+authors:
+  - name: "QronG9"
+version: 1.0.0
+date-released: 2026-09-05
+abstract: "A research artifact for independently recalculating judgment coverage, abstract-availability diagnostics, and sharp paired precision bounds from fixed retrieval rankings and original BEIR TREC-COVID judgments. It does not establish a new pooling-bias mechanism or reproduce downstream topic analysis."
+keywords:
+  - information retrieval
+  - reproducibility
+  - judgment coverage
+  - TREC-COVID
+
