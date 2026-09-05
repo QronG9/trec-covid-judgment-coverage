@@ -1,5 +1,7 @@
 # TREC-COVID Document-Selection Experiments
 
+[![DOI](https://zenodo.org/badge/1358594600.svg)](https://doi.org/10.5281/zenodo.22416326)
+
 Reproducible document-selection experiments on the BEIR version of TREC-COVID, covering **171,332 documents, all 50 queries, and 12 retrieval / selection configurations**.
 
 This repository contains fixed rankings, evaluation code, result tables, figures, and provenance records for studying how retrieval choices affect **judgment coverage** and observed retrieval effectiveness.
@@ -149,9 +151,11 @@ References to the upstream work, datasets, and their relationship to the experim
 
 ## Citation
 
-Citation metadata is provided in [CITATION.cff](CITATION.cff).
+**Archived release (v2.0.0-en):** https://doi.org/10.5281/zenodo.22416327
 
-If you use this release, please cite the archived release corresponding to the version used. A Zenodo DOI can be added here after the GitHub release is archived.
+Liu, Rongrong. (2026). *TREC-COVID Document-Selection Experiments: Method Reimplementation, Extensions and Evaluation* (Version v2.0.0-en) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22416327
+
+Citation metadata is also provided in [CITATION.cff](CITATION.cff). For citations to the evolving software project across versions, use the concept DOI `10.5281/zenodo.22416326`.
 
 ## License
 
