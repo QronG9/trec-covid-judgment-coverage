@@ -1,5 +1,5 @@
-"""我运行四个基本方法与 Direct min-max 的全部 50 查询排名，并保存 NPZ。
-同一保存运行服务于初始五查询分析和全查询分析。"""
+"""I generate and save NPZ rankings for all 50 queries using the four baseline methods and Direct min-max.
+The same saved runs support both the initial five-query analysis and the complete-query analysis."""
 from __future__ import annotations
 
 import json

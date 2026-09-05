@@ -1,4 +1,4 @@
-"""我在这里集中定义数据路径、文档表示、分词、查询和判断标签读取，以及实验参数。"""
+"""I define data paths, document representations, tokenization, query and judgment loading, and experimental parameters."""
 from __future__ import annotations
 
 import json

@@ -1,5 +1,5 @@
-"""我在这里定义补充方法的路径、模型标识、运行保存方式和资源记录。
-模型按名称加载；具体 revision 的使用方式以模型构造调用为准。"""
+"""I define paths, model identifiers, run storage, and resource records for the additional methods.
+Models are loaded by name; the model-construction calls determine how specific revisions are used."""
 from __future__ import annotations
 
 import json

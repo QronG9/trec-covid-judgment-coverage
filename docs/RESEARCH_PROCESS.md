@@ -1,46 +1,54 @@
-# 我如何完成并保存这组实验
+# How I Conducted and Preserved These Experiments
 
-## 从查询出发
+## Beginning with the Queries
 
-我先围绕 TREC-COVID 的 9、13、34、45、48 五个查询开展分析。BM25、MPNet、
-Direct、均匀随机和 Direct minmax 的排名已按全 50 查询生成；初始材料取其中
-对应五题。MMR、Query Expansion、Retrieval Random 则先单独保存五查询运行。
-这八个配置的初始分析输入保存在 `data/runs/pilot/`；查询文本见 `data/pilot_queries.csv`。
+I began by analyzing five TREC-COVID queries: 9, 13, 34, 45, and 48. Rankings for BM25, MPNet,
+Direct, uniform random selection, and Direct minmax had been generated for all 50 queries;
+the initial materials use the corresponding five-query subsets. For MMR, Query Expansion,
+and Retrieval Random, I first saved separate five-query runs. The inputs to the initial
+analysis of these eight configurations are preserved in `data/runs/pilot/`; the query texts
+are available in `data/pilot_queries.csv`.
 
-## 扩展到全部 50 个查询
+## Extending the Analysis to All 50 Queries
 
-我把基础方法的覆盖分析扩展到该基准的全部查询，并复用保存的排名。每个
-配置每题保留 1000 个文档，统一计算 @20、@50、@100 和 @1000 的指标。
-这样我可以同时观察汇总值和每个查询的具体差异。
+I extended the coverage analysis of the basic methods to every query in the benchmark,
+reusing the saved rankings. I retained 1000 documents per query for each configuration
+and computed a common set of metrics at @20, @50, @100, and @1000. This allows me to
+examine both aggregate values and the specific differences for individual queries.
 
-## 加入方法与实验条件
+## Adding Methods and Experimental Conditions
 
-我将 MMR、Query Expansion 和 Retrieval Random 扩展到全部 50 个查询，
-并加入 SPLADE、BGE、BM25+CrossEncoder。我还保存一组只重排 Direct
-top-1000 的 MMR，与从 Direct top-5000 中选择 1000 篇的配置对应起来。
-连同 Direct minmax，完整实验共有 12 个全量配置。
+I extended MMR, Query Expansion, and Retrieval Random to all 50 queries and added
+SPLADE, BGE, and BM25+CrossEncoder. I also retained an MMR run that only reranks the
+Direct top-1000, alongside the configuration that selects 1000 documents from the
+Direct top-5000. Including Direct minmax, the complete experiment contains 12
+full-query configurations.
 
-MMR 与 Query Expansion 在原五个查询上的保存序列可以逐项对照。
-Retrieval Random 使用 seed=42 的随机数流；查询在 5 题和 50 题运行中的
-位置不同，因此我分别保存两次实际抽样，并比较其交集。
+The saved sequences for MMR and Query Expansion on the original five queries can be
+compared item by item. Retrieval Random uses a random-number stream with seed=42;
+because queries occupy different positions in the 5-query and 50-query runs,
+I preserve the actual samples from both runs and compare their intersections.
 
-## 检查文档表示与指标定义
+## Examining Document Representations and Metric Definitions
 
-我从原始语料提取标题与摘要的可用性和字符数，比较不同方法的检索集合。
-我还在全部非空摘要文档中按既有评分取 top-k，保留相应排名用于重算。
+I extracted title and abstract availability and character counts from the original
+corpus and compared the retrieved sets across methods. I also selected the top-k
+documents by their existing scores from all documents with nonempty abstracts and
+retained the resulting rankings for recomputation.
 
-对 precision，我分别计算 QREL=2 和 QREL≥1，并在固定排名与既有标签下
-利用共同 U 的抵消关系，计算每对方法差值的可达范围。我将每个范围的假设、
-公式和逐查询结果一并保留。
+For precision, I computed QREL=2 and QREL≥1 separately. Under fixed rankings and
+existing labels, I used the cancellation of shared U labels to calculate the attainable
+range of each paired method difference. I retain the assumptions, formulas, and
+per-query results for each range.
 
-## 让结果可以沿计算链复查
+## Making the Computational Path Traceable
 
-我把上述运行导出为通用 TSV，把实际关键词和排序语义保存为元数据，
-用统一程序从原始 qrels 生成结果表，再与保存的参考表核对。我同时使用
-小规模可穷举的标签情形检验数学界限，并检查输入标识、名次、共享集合和
-文件哈希。
+I exported these runs in a common TSV format, preserved the actual keywords and
+ranking semantics as metadata, generated result tables from the original qrels using
+a common program, and compared them with the saved reference tables. I also tested
+the mathematical bounds using small label-assignment cases that can be enumerated
+exhaustively, and checked input identifiers, ranks, shared sets, and file hashes.
 
-我的版本记录保留每个阶段的输入与输出。读者可以从
-[研究报告](RESEARCH_NOTE.md)进入结果，也可以直接按
-[仓库首页](../README.md)的命令重新生成表格。
-
+My version records preserve the inputs and outputs of each stage. Readers can begin
+with the [research report](RESEARCH_NOTE.md) or regenerate the tables directly using
+the commands on the [repository home page](../README.md).

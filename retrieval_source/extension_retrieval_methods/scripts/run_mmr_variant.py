@@ -1,6 +1,6 @@
 
-"""我在 Direct top-1000 集合内运行 MMR，保留完整候选集合并生成贪心重排次序。
-此配置与从 Direct top-5000 选取 1000 篇的配置分别保存。"""
+"""I apply MMR within the Direct top-1000 set, preserving the complete candidate set and producing a greedy reranking.
+I save this configuration separately from the configuration that selects 1000 documents from the Direct top-5000."""
 from __future__ import annotations
 import numpy as np
 from ext_common import EXT_RUNS, N_SELECT, Timer, log, save_run

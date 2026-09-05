@@ -1,5 +1,5 @@
-"""我在这里实现 BM25、MPNet、Direct、两种随机选择、MMR 和查询扩展。
-MMR 使用贪心选择次序及候选池位置并列规则；一般评分排名按语料索引处理并列。"""
+"""I implement BM25, MPNet, Direct, two random-selection methods, MMR, and query expansion.
+MMR uses greedy selection order and candidate-pool position to resolve ties; ordinary score-based rankings resolve ties by corpus index."""
 from __future__ import annotations
 
 import json

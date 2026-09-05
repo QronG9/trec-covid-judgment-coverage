@@ -1,122 +1,122 @@
-# TREC-COVID 文档选择实验：方法复现与评估分析
+# TREC-COVID Document-Selection Experiments: Method Reimplementation and Evaluation
 
-**作者：QronG9 · v2.0.0 · 2026-09-05**
+**Author: QronG9 · v2.0.0 · 2026-09-05**
 
-**从这里开始：[我的研究短报告](docs/RESEARCH_NOTE.md)** · [方法与计算定义](docs/METHODS.md) · [我的贡献](docs/CONTRIBUTIONS.md)
+**Start here: [My Research Note](docs/RESEARCH_NOTE.md)** · [Methods and Computational Definitions](docs/METHODS.md) · [My Contributions](docs/CONTRIBUTIONS.md)
 
-我围绕“不同文档选择方法取到了什么，以及现有相关性判断能够评价其中多少内容”开展了一组可复算实验。我以 BEIR 版 TREC-COVID 的 **171,332 篇文档、全部 50 个查询**为基础，重建检索方法，保存排名，并分别计算判断覆盖和观察到的检索指标。本仓库汇集我的初始五查询实验、冻结的全查询基线，以及冻结后完成的方法扩展与评估分析。
+I conducted a series of reproducible experiments to examine which documents different selection methods retrieve and how much of their output can be evaluated using existing relevance judgments. Using **171,332 documents and all 50 queries** in the BEIR version of TREC-COVID, I reimplemented retrieval methods, saved their rankings, and calculated judgment coverage and observed retrieval metrics separately. This repository brings together my initial five-query experiments, frozen baselines evaluated on all queries, and subsequent method extensions and evaluation analyses.
 
-我发布 **12 个检索 / 选择配置、每配置每查询 top-1000 的固定排名**，连同原始查询、qrels、文档元数据、分析代码和结果表。加上五查询阶段与非空摘要实验，本版共保存 **740,000 条排名位置**。读者可以离线重算结果，也可以沿方法配置和来源记录核查各阶段的实验过程。
+I release **fixed top-1000 rankings for each query in 12 retrieval and selection configurations**, together with the original queries, qrels, document metadata, analysis code, and result tables. Including the five-query stage and nonempty-abstract experiments, this version contains **740,000 saved ranking positions**. Readers can recompute the results offline and examine each experimental stage through the method configurations and provenance records.
 
-**English:** I reimplemented document-selection methods and evaluated 12 retrieval and selection configurations on all 50 BEIR TREC-COVID queries. I report judgment coverage and observed retrieval effectiveness separately, examine document eligibility and fixed-candidate reranking, and compute sharp paired precision bounds. This repository includes saved rankings, original judgments, analysis code, and reproducible outputs from my initial experiments and subsequent extensions.
+**Summary:** I reimplemented document-selection methods and evaluated 12 retrieval and selection configurations on all 50 BEIR TREC-COVID queries. I report judgment coverage and observed retrieval effectiveness separately, examine document eligibility and fixed-candidate reranking, and compute sharp paired precision bounds. This repository includes saved rankings, original judgments, analysis code, and reproducible outputs from my initial experiments and subsequent extensions.
 
-## 我完成的实验与产出
+## My Experiments and Outputs
 
-| 工作 | 我发布的可验证内容 |
+| Work | Verifiable materials I release |
 |---|---|
-| 方法复现与扩展 | BM25、MPNet、两种 Direct 归一化、两类随机选择、Query Expansion、两种 MMR 设置、SPLADE、BGE、BM25 + CrossEncoder；共 600,000 条主排名记录 |
-| 全查询评估 | 12 个配置在 @20、@50、@100、@1000 的覆盖与观察相关比例，以及 P@20、Recall@1000 和逐查询表 |
-| 文档集合分析 | 方法间集合重合、相对 BM25 的集合分层、BM25 top-1000 内外的文档组成，以及固定候选集重排的集合一致性检查 |
-| 文档可用性分析 | 标题与摘要输入定义、空摘要分层，以及 BM25/MPNet 在全库非空摘要文档中的重新取前列实验 |
-| 未判断标签分析 | 固定列表的配对 precision 严格可达界限，以及三个基线 top-20 并集内 492 个未判断查询—文档对清单 |
-| 可复算发布 | 通用压缩排名、数据字典、版本与哈希、标准库分析入口、测试和 GitHub Actions |
+| Method reimplementation and extension | BM25, MPNet, two Direct normalization variants, two forms of random selection, Query Expansion, two MMR settings, SPLADE, BGE, and BM25 + CrossEncoder; 600,000 main ranking records in total |
+| Evaluation across all queries | Coverage and observed relevant proportions at @20, @50, @100, and @1000 for 12 configurations, together with P@20, Recall@1000, and per-query tables |
+| Document-set analysis | Set overlap between methods, set strata relative to BM25, document composition inside and outside BM25 top-1000, and set-invariance checks for fixed-candidate reranking |
+| Document-availability analysis | Title-and-abstract input definitions, stratification by abstract availability, and reselection of top-ranked BM25/MPNet documents from all corpus documents with nonempty abstracts |
+| Analysis of unjudged labels | Sharp bounds on paired precision differences for fixed lists, and an inventory of 492 unjudged query–document pairs in the top-20 union of the three baselines |
+| Reproducible release | Portable compressed rankings, a data dictionary, versions and hashes, standard-library analysis entry points, tests, and GitHub Actions |
 
-## 主要结果
+## Main Results
 
-以下均为 **50 个查询等权平均**。Hole 是未判断比例；观察 P@20 按 `qrel=2` 计相关，U 暂不贡献相关命中。这两类指标分别回答“判断覆盖多少”和“现有标签确认多少相关项”。
+All values below are **equally weighted means over 50 queries**. Hole is the unjudged proportion; observed P@20 treats `qrel=2` as relevant, while U contributes no relevant hits in this calculation. These metrics address two distinct questions: how much output is covered by judgments, and how many relevant items the existing labels confirm.
 
-| 方法 / 实验配置 | Hole@20 | Hole@100 | 观察 P@20 |
+| Method / experimental configuration | Hole@20 | Hole@100 | Observed P@20 |
 |---|---:|---:|---:|
 | BM25 | 0.0720 | 0.1960 | 0.487 |
 | MPNet | 0.4030 | 0.4918 | 0.426 |
-| Direct：max-sum | 0.0540 | 0.1464 | 0.630 |
-| Direct：min-max | 0.0570 | 0.1508 | 0.628 |
+| Direct: max-sum | 0.0540 | 0.1464 | 0.630 |
+| Direct: min-max | 0.0570 | 0.1508 | 0.628 |
 | Random Uniform | 0.9960 | 0.9934 | 0.001 |
-| Direct + MMR：从 5000 选 1000 | 0.8510 | 0.8760 | 0.035 |
-| Direct + MMR：重排既有 1000 | 0.6600 | 0.6630 | 0.078 |
+| Direct + MMR: select 1000 from 5000 | 0.8510 | 0.8760 | 0.035 |
+| Direct + MMR: rerank the existing 1000 | 0.6600 | 0.6630 | 0.078 |
 | Query Expansion | 0.0600 | 0.1570 | 0.622 |
 | Retrieval Random | 0.1470 | 0.4228 | 0.503 |
 | SPLADE | 0.1080 | 0.2636 | 0.600 |
 | BGE | 0.1180 | 0.2788 | 0.668 |
 | BM25 + CrossEncoder | 0.0880 | 0.2416 | 0.581 |
 
-我将 Direct 的两种归一化配置与其他方法并列复算。来源：[全配置覆盖汇总](results/extensions/coverage_summary.csv)和[观察检索指标](results/extensions/observed_ir_summary.csv)。配置和名称对应见[方法说明](docs/METHODS.md)。模型使用各自记录的输入长度、前缀与评分设置；我将差异解释为这些具体配置在该固定基准上的表现。
+I recompute both Direct normalization configurations alongside the other methods. Sources: [coverage summary for all configurations](results/extensions/coverage_summary.csv) and [observed retrieval metrics](results/extensions/observed_ir_summary.csv). The [methods documentation](docs/METHODS.md) maps names to configurations. Models use their respective recorded input lengths, prefixes, and scoring settings; I interpret the differences as the performance of these specific configurations on this fixed benchmark.
 
-我从这些结果中整理出四项可以直接核查的观察：
+I identify four observations that can be checked directly against these results:
 
-- **同一类方法也呈现不同结果。** BGE 与 MPNet 都使用稠密向量检索，其 Hole@20 分别为 0.118 和 0.403；我因此按具体模型和配置报告结果。
-- **候选集合与前列顺序可以分别检查。** BM25 + CrossEncoder 保留 BM25 的全部 top-1000，因此两者 @1000 的覆盖和召回一致；前列指标随重排变化。两种 MMR 设置进一步区分了“从更大池选文档”与“重排同一集合”。
-- **文档可入选条件与覆盖相关。** 在全库非空摘要文档中沿既有评分重新取 top-20，MPNet−BM25 的 Hole 差从 33.1 变为 16.2 个百分点。我同时发布筛选定义、排名和分层计数。
-- **固定排名下可以精确界定未知标签的影响。** 保留既有标签并采用 QREL=2 时，Direct−BM25 的平均 P@20 差的严格可达范围为 **[0.092, 0.176]**，整个范围为正。补充配置中，BGE−BM25、SPLADE−BM25、BM25 + CrossEncoder−BM25 的区间也全部为正，详见[扩展界限表](results/extensions/paired_precision_bounds_summary.csv)。
+- **Methods within the same family can produce different results.** BGE and MPNet both use dense-vector retrieval, with Hole@20 values of 0.118 and 0.403, respectively. I therefore report results by specific model and configuration.
+- **Candidate sets and ranking prefixes can be examined separately.** BM25 + CrossEncoder retains the entire BM25 top-1000 set, so their coverage and recall at @1000 are identical; prefix metrics change with reranking. The two MMR settings further distinguish selection from a larger pool from reranking the same set.
+- **Document eligibility is associated with coverage.** When I reselect the top-20 from all corpus documents with nonempty abstracts using the existing scores, the MPNet−BM25 Hole difference changes from 33.1 to 16.2 percentage points. I also release the filtering definition, rankings, and stratified counts.
+- **The effect of unknown labels can be bounded exactly for fixed rankings.** With existing labels retained and QREL=2, the sharp range for the mean Direct−BM25 P@20 difference is **[0.092, 0.176]**, which is entirely positive. Among the additional configurations, the intervals for BGE−BM25, SPLADE−BM25, and BM25 + CrossEncoder−BM25 are also entirely positive; see the [extended bounds table](results/extensions/paired_precision_bounds_summary.csv).
 
-![我的十二个文档选择配置：判断覆盖与观察 P@20](figures/method_comparison.png)
+![My twelve document-selection configurations: judgment coverage and observed P@20](figures/method_comparison.png)
 
-全部配置使用同一组 50 个查询。[三基线深入分析图](figures/research_summary.png)进一步展示摘要条件与配对界限。
+All configurations use the same 50 queries. The [detailed three-baseline figure](figures/research_summary.png) further presents the abstract-eligibility condition and paired bounds.
 
-## 快速复算
+## Quick Reproduction
 
-需要 Python **3.9 或更新版本**。在仓库根目录运行：
+Python **3.9 or later** is required. Run the following from the repository root:
 
 ```bash
 python3 scripts/verify_release.py
 ```
 
-我把核心分析做成仅使用 Python 标准库的离线流程。验证入口检查发布文件哈希，在独立临时目录重算结果并与发布表逐字节比较，运行输入与计算语义测试，检查文档链接和图表来源。本版包含 34 个可重新生成的结果文件、10,274 项历史数值对照和 21 项测试。具体本次运行记录见 [RELEASE_VALIDATION](provenance/RELEASE_VALIDATION.md)。
+I implemented the core analysis as an offline workflow that uses only the Python standard library. The verification entry point checks release-file hashes, recomputes results in a separate temporary directory and compares them byte for byte with the released tables, runs input-validation and computational-semantics tests, and checks documentation links and figure sources. This version includes 34 regenerable result files, 10,274 numerical comparisons with historical outputs, and 21 tests. The record of this validation run is available in [RELEASE_VALIDATION](provenance/RELEASE_VALIDATION.md).
 
-保存自己复算的结果：
+To save your own recomputed results:
 
 ```bash
 python3 scripts/analyze.py --output-dir build/results
 python3 scripts/analyze_extensions.py --data-dir data --output-dir build/results/extensions
 ```
 
-第一个入口复算三个基线的深入分析和非空摘要实验；第二个入口复算 12 个全查询配置与初始五查询实验的覆盖、观察指标和集合分析。离线复算使用已发布排名；原始语料到排名的生成配置、代码来源和模型记录在[方法说明](docs/METHODS.md)中单独列出。
+The first entry point recomputes the detailed three-baseline analysis and the nonempty-abstract experiments. The second recomputes coverage, observed metrics, and set analyses for the 12 configurations evaluated on all queries and the initial five-query experiments. Offline reproduction uses the released rankings; the configurations, code provenance, and model records for generating rankings from the original corpus are documented separately in the [methods documentation](docs/METHODS.md).
 
-我另提供图表重建入口；安装可选绘图依赖后，可从自己的复算表生成两张图：
+I also provide a figure-generation entry point. After installing the optional plotting dependencies, you can generate both figures from your own recomputed tables:
 
 ```bash
 python3 -m pip install -r requirements-figures.txt
 python3 scripts/plot_results.py --results-dir build/results --output-dir build/figures
 ```
 
-## 阅读与文件导航
+## Reading and File Guide
 
-| 入口 | 内容 |
+| Entry point | Contents |
 |---|---|
-| [研究短报告](docs/RESEARCH_NOTE.md) | 我研究的问题、分阶段工作、完整方法比较和主要分析 |
-| [方法与计算定义](docs/METHODS.md) | 12 个配置的实现、0/1/2/U 语义、公式、随机协议和复算层级 |
-| [排名生成代码](retrieval_source/README.md) | 原始方法实现、运行配置、依赖及代码来源 |
-| [我的贡献与工具使用](docs/CONTRIBUTIONS.md) | 我的实验工作、材料产出和 AI 辅助说明 |
-| [数据说明](data/README.md) | 原始数据、排名格式、文档元数据及获取方法 |
-| [扩展结果](results/extensions/) | 全查询配置、初始五查询实验的逐查询与汇总结果 |
-| [三个基线的覆盖表](results/coverage_summary.csv) | BM25、MPNet、Direct 在四个深度的判断覆盖 |
-| [摘要分层](results/abstract_strata.csv) / [非空摘要实验](results/nonempty_coverage_summary.csv) | 文档组成与可入选条件分析 |
-| [配对 precision 界限](results/paired_precision_bounds_summary.csv) | 三个基线共享未知标签抵消后的严格可达区间 |
-| [top-20 未判断清单](results/top20_unjudged_frame.csv) | 查询、文档、摘要状态及三个基线中的名次 |
-| [研究过程](docs/RESEARCH_PROCESS.md) | 分阶段做法、后续补充与本版采用的定义 |
-| [来源与版本记录](provenance/README.md) / [历史材料](archive/README.md) | 初始实验、冻结记录和后续补充的对应关系 |
+| [Research note](docs/RESEARCH_NOTE.md) | My research questions, experimental stages, complete method comparison, and main analyses |
+| [Methods and computational definitions](docs/METHODS.md) | Implementation of the 12 configurations, 0/1/2/U semantics, formulas, randomization protocols, and reproduction levels |
+| [Ranking-generation code](retrieval_source/README.md) | Original method implementations, run configurations, dependencies, and code provenance |
+| [My contributions and tool use](docs/CONTRIBUTIONS.md) | My experimental work, released materials, and AI-assistance statement |
+| [Data documentation](data/README.md) | Original data, ranking format, document metadata, and data acquisition |
+| [Extension results](results/extensions/) | Per-query and aggregate results for the configurations evaluated on all queries and initial five-query experiments |
+| [Three-baseline coverage table](results/coverage_summary.csv) | Judgment coverage for BM25, MPNet, and Direct at four depths |
+| [Abstract strata](results/abstract_strata.csv) / [nonempty-abstract experiments](results/nonempty_coverage_summary.csv) | Analyses of document composition and eligibility |
+| [Paired precision bounds](results/paired_precision_bounds_summary.csv) | Sharp intervals for the three baselines after cancellation of shared unknown labels |
+| [Top-20 unjudged inventory](results/top20_unjudged_frame.csv) | Query, document, abstract status, and ranks in the three baselines |
+| [Research process](docs/RESEARCH_PROCESS.md) | Experimental stages, subsequent additions, and the definitions used in this version |
+| [Provenance and version records](provenance/README.md) / [historical materials](archive/README.md) | Correspondence among the initial experiments, freeze records, and subsequent additions |
 
-结果比例使用 0–1；百分点为比例差乘 100。正文 precision 和界限采用 `label_rule=strict_eq2`；`relaxed_ge1` 是单独提供的相关性阈值补充。
+Proportions are expressed on a 0–1 scale; percentage-point differences are proportional differences multiplied by 100. Precision values and bounds in the main text use `label_rule=strict_eq2`; `relaxed_ge1` is provided separately as a supplementary relevance threshold.
 
-## 我如何组织研究材料
+## How I Organize the Research Materials
 
-我参考 [ACM Artifact Review and Badging](https://www.acm.org/publications/policies/artifact-review-and-badging-current) 对 documented、consistent、complete、exercisable 的要求组织仓库：
+I organize the repository with reference to the documented, consistent, complete, and exercisable criteria in [ACM Artifact Review and Badging](https://www.acm.org/publications/policies/artifact-review-and-badging-current):
 
-| 要求 | 对应材料 |
+| Criterion | Corresponding materials |
 |---|---|
-| 说明充分 | README、研究短报告、方法配置和数据字典 |
-| 结果与材料一致 | 原始标签、保存排名、逐查询表、来源对照和哈希 |
-| 研究范围内组件齐全 | 离线输入、分析脚本、测试、图表及第三方材料来源 |
-| 可执行 | 干净目录复算、自动验证入口和 GitHub Actions |
+| Documented | README, research note, method configurations, and data dictionary |
+| Consistent | Original labels, saved rankings, per-query tables, provenance comparisons, and hashes |
+| Complete within the stated research scope | Offline inputs, analysis scripts, tests, figures, and sources of third-party materials |
+| Exercisable | Reproduction in a clean directory, an automated verification entry point, and GitHub Actions |
 
-上述四项是本仓库的材料组织标准；发布状态为作者整理和计算验证，ACM 徽章状态为未申请。
+These four criteria guide the organization of this repository. I assembled and computationally validated this release; I have not submitted an ACM badge application.
 
-## 引用、许可与发布
+## Citation, Licensing, and Release
 
-我以 Rangreji、Zhong、Field 的文档选择研究为复现起点，并使用 BEIR/TREC-COVID 的数据与评估背景。BEIR 关于判断覆盖和补充判断的研究为我的分析提供了参考，文献与具体关系见[短报告](docs/RESEARCH_NOTE.md)。
+I use the document-selection study by Rangreji, Zhong, and Field as the starting point for my reimplementation, together with the data and evaluation context of BEIR/TREC-COVID. BEIR's discussion of judgment coverage and supplementary judgments informs my analysis; references and their specific relationship to this work are provided in the [research note](docs/RESEARCH_NOTE.md).
 
-- [CITATION.cff](CITATION.cff)：本项目引用信息；上游来源见短报告和数据说明。
-- [LICENSE](LICENSE)：代码、文档及第三方数据的许可范围。
-- [GitHub 上传说明](docs/GITHUB_RELEASE.md)：上传前检查及仓库发布步骤。
+- [CITATION.cff](CITATION.cff): citation information for this project; upstream sources are listed in the research note and data documentation.
+- [LICENSE](LICENSE): licensing scope for code, documentation, and third-party data.
+- [GitHub release instructions](docs/GITHUB_RELEASE.md): pre-upload checks and repository publication steps.
 
-原始冻结材料保留原有版本；本版把完成的后续运行结果一并整理为可核验的研究成果，默认阅读入口是上方的研究短报告。
+The original frozen materials retain their original versions. This version incorporates the completed subsequent runs as verifiable research outputs, with the research note above serving as the default reading entry point.

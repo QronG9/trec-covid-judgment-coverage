@@ -1,47 +1,38 @@
-# 我完成的发布验证
+# My Release Verification
 
 **v2.0.0 · 2026-09-05**
 
-我对本版保存的排名、原始判断和分析程序执行以下检查。验证入口在独立临时
-目录重新生成结果，让发布表与计算输入保持可核对的关系。
+I performed the following checks on the saved rankings, original judgments, and analysis programs in this release. The verification entry point regenerates results in an isolated temporary directory so that the published tables can be checked against their computational inputs.
 
-| 检查 | 我的实际运行结果 |
+| Check | Result of my execution |
 |---|---|
-| 原项目保留 | 246 个已跟踪 / 暂存文件的 SHA-256、原 HEAD 和暂存状态保持一致 |
-| 原冻结版本 | 原冻结清单中 72 项均匹配 |
-| 原始 BEIR 数据 | 语料、查询和 qrels 的 SHA-256 匹配；原语料重新生成相同的文本无关元数据 |
-| 排名输入 | 12 个全查询配置、8 个五查询配置、2 个非空摘要条件，共 740,000 个保存位置 |
-| 干净目录复算 | 14 个基线深入分析文件和 20 个全配置 / 阶段比较文件，共 34 个 CSV/JSON 逐字节一致 |
-| 历史数值对应 | 3,895 行参考值中的 10,274 项数字比较一致 |
-| 非空摘要导出 | 400 个查询 / 深度覆盖单元与保存的结果一致 |
-| 程序与数学语义 | 21 项测试在普通和优化模式下均通过；覆盖共享 U 抵消、可穷举标签补全、MMR 次序、随机空分数、集合保持和输入检查 |
-| 排名生成代码 | 10 个原始实现文件通过语法检查及计算语法树对照；来源和发布文件分别保存哈希 |
-| 研究正文 | 12 个配置的正文指标、配对界限、摘要条件与清单计数核对一致 |
-| 图表 | 两张图分别展示 12 配置比较和三基线深入分析；从 CSV 生成并保存来源哈希，已检查显示效果 |
-| 文档 | 验证入口检查公开 Markdown 的相对链接 |
+| Original-project preservation | SHA-256 hashes for 246 tracked or staged files, the original HEAD, and the staging state are unchanged |
+| Original frozen version | All 72 entries in the original frozen manifest match |
+| Raw BEIR data | Corpus, query, and qrel SHA-256 hashes match; the original corpus regenerates identical metadata without document text |
+| Ranking inputs | 12 complete-query configurations, 8 five-query configurations, and 2 nonempty-abstract conditions contain 740,000 saved ranking positions |
+| Clean-directory recomputation | 14 detailed baseline-analysis files and 20 complete-configuration or cross-stage comparison files, totaling 34 CSV/JSON files, match byte for byte |
+| Historical numerical correspondence | All 10,274 numerical comparisons across 3,895 reference rows match |
+| Nonempty-abstract export | 400 query/cutoff coverage cells match the saved results |
+| Program and mathematical semantics | All 21 tests pass in both normal and optimized modes, covering shared-U cancellation, exhaustive label completions, MMR ordering, empty random scores, set preservation, and input checks |
+| Ranking-generation code | 10 original implementation files pass syntax checks and computational abstract syntax tree comparisons; source and published file hashes are recorded separately |
+| Research text | Reported metrics for all 12 configurations, paired bounds, abstract conditions, and inventory counts match the computed results |
+| Figures | Two figures present the 12-configuration comparison and detailed three-baseline analyses; both were generated from CSV tables, source hashes were recorded, and their visual presentation was inspected |
+| Documentation | The verification entry point checks relative links in the public Markdown files |
 
-我使用 Python **3.9.6** 和 **3.11.15** 执行离线复算。
-核心计算只使用标准库；图表使用 matplotlib **3.11.1**，具体来源表及版本保存在
-[figure_sources.json](../figures/figure_sources.json)。
+I executed offline recomputation with Python **3.9.6** and **3.11.15**. The core calculations use only the standard library. Figures were generated with matplotlib **3.11.1**; the source tables and version are recorded in [figure_sources.json](../figures/figure_sources.json).
 
 ```bash
 python3 scripts/verify_release.py
 ```
 
-该入口检查发布清单，在临时目录重算并比较全部 34 个结果文件，再执行数字
-对照、测试、文档链接和图表来源检查。它保留已有参考值和结果表，便于直接
-识别所运行版本与所复算内容。
+This entry point checks the release manifest, recomputes and compares all 34 result files in a temporary directory, and then checks numerical correspondence, tests, documentation links, and figure sources. It preserves the existing reference values and result tables so that the executed version and recomputed contents can be identified directly.
 
-在已有原始语料的本地环境，我还运行：
+In the local environment containing the original corpus, I also ran:
 
 ```bash
 python3 scripts/fetch_corpus.py --verify-only
 ```
 
-我把验证范围落实为固定输入复算、历史数字对应和文件完整性。原始排名生成代码
-另见[实现说明](../retrieval_source/README.md)，其中记录模型依赖、原始配置与来源。
-本次完整重算的起点是发布的保存排名；模型推理阶段以原先保存的运行结果为依据。
+I define the verification scope as fixed-input recomputation, historical numerical correspondence, and file integrity. The [implementation documentation](../retrieval_source/README.md) records the original ranking-generation code, model dependencies, configurations, and provenance. The complete recomputation performed for this release begins with the published saved rankings; the model-inference stage is represented by the previously saved run outputs.
 
-我准备了 GitHub Actions，它会在上传后的 push、pull request 或手动触发时执行
-相同验证入口。当前记录是本地实际运行结果，远程执行结果由上传后的工作流记录。
-公开包保留脚本、通用输入、结果、图和版本清单；本地另保存原始全文与历史备份。
+I have prepared GitHub Actions to execute the same verification entry point after upload, on push, pull request, or manual triggers. This record reports actual local execution; remote outcomes will be recorded by the workflow after upload. The public package contains scripts, portable inputs, results, figures, and version manifests. I retain the original article text and historical backups locally.

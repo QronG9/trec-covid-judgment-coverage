@@ -1,4 +1,4 @@
-"""我在这里构建语料顺序映射、分词缓存、BM25 索引和 MPNet 文档向量。"""
+"""I construct the corpus-order mapping, tokenization cache, BM25 index, and MPNet document embeddings."""
 from __future__ import annotations
 
 import json

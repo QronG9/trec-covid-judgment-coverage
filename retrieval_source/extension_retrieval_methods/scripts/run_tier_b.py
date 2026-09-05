@@ -1,5 +1,5 @@
-"""我在这里生成 SPLADE、BGE 和 BM25 + CrossEncoder 的全部 50 查询排名。
-BM25 + CrossEncoder 保留 BM25 top-1000 候选集合，并重新计算文档顺序。"""
+"""I generate rankings for all 50 queries using SPLADE, BGE, and BM25 + CrossEncoder.
+BM25 + CrossEncoder preserves the BM25 top-1000 candidate set and recomputes the document order."""
 from __future__ import annotations
 
 import json

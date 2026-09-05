@@ -1,4 +1,4 @@
-"""我使用稀疏矩阵实现 BM25Okapi 计分，并提供与 rank_bm25 的给定容差比较函数。"""
+"""I implement BM25Okapi scoring with sparse matrices and provide a comparison against rank_bm25 at a specified tolerance."""
 from __future__ import annotations
 
 import pickle

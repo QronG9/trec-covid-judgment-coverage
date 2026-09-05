@@ -1,35 +1,24 @@
-# 我的来源与版本记录
+# My Provenance and Version Records
 
-我以项目内相对路径、原始文件哈希和逐项参考值连接各阶段的实验。当前研究报告
-覆盖 12 个全查询配置、初始五查询材料与两个非空摘要条件。
+I connect the experimental stages through project-relative paths, original file hashes, and itemized reference values. The current research report covers 12 complete-query configurations, the initial five-query materials, and two nonempty-abstract conditions.
 
-| 记录 | 我保留的内容 |
+| Record | Information I preserve |
 |---|---|
-| [source_state.json](source_state.json) | 来源项目 HEAD、冻结标签与本版实验范围 |
-| [source_inventory.csv](source_inventory.csv) | 打包时原项目 246 个已跟踪 / 暂存文件的相对路径和 SHA-256 |
-| [original_freeze_verification.json](original_freeze_verification.json) | 原冻结清单中 72 个文件的哈希核对 |
-| [source_preservation_check.json](source_preservation_check.json) | 原项目文件、HEAD 与暂存状态的保留检查 |
-| [import_inputs.json](import_inputs.json) | 原始数据、基础排名、索引映射及非空摘要评分输入的来源 |
-| [experiment_imports.json](experiment_imports.json) | 后续配置和初始五查询排名的来源、导出规则、行数与哈希 |
-| [nonempty_export_validation.json](nonempty_export_validation.json) | 非空摘要条件 400 个查询 / 深度覆盖单元与保存结果的对应 |
-| [reference_values.json](reference_values.json) | 三基线深入分析的 1,324 行来源参考值、2,572 项数字对照 |
-| [extension_reference_values.json](extension_reference_values.json) | 全查询与初始五查询的 2,571 行参考值、7,702 项数字对照 |
-| [RELEASE_VALIDATION.md](RELEASE_VALIDATION.md) | 我实际完成的发布检查及执行环境 |
+| [source_state.json](source_state.json) | Source-project HEAD, frozen tags, and the experimental scope of this release |
+| [source_inventory.csv](source_inventory.csv) | Relative paths and SHA-256 hashes for the 246 tracked or staged files in the original project at packaging time |
+| [original_freeze_verification.json](original_freeze_verification.json) | Hash comparisons for the 72 entries in the original frozen manifest |
+| [source_preservation_check.json](source_preservation_check.json) | Preservation checks for the original files, HEAD, and staging state |
+| [import_inputs.json](import_inputs.json) | Sources of the raw data, baseline rankings, index mapping, and scoring inputs for the nonempty-abstract condition |
+| [experiment_imports.json](experiment_imports.json) | Sources, export conventions, row counts, and hashes for subsequent configurations and initial five-query rankings |
+| [nonempty_export_validation.json](nonempty_export_validation.json) | Correspondence between 400 query/cutoff coverage cells in the nonempty-abstract conditions and their saved results |
+| [reference_values.json](reference_values.json) | 1,324 source-reference rows and 2,572 numerical comparisons for the detailed three-baseline analyses |
+| [extension_reference_values.json](extension_reference_values.json) | 2,571 reference rows and 7,702 numerical comparisons for the complete-query and initial five-query analyses |
+| [RELEASE_VALIDATION.md](RELEASE_VALIDATION.md) | Release checks I executed and the execution environments |
 
-两份参考值文件共提供 **3,895 行、10,274 项数字对照**。这些值从原项目已保存的
-结果表提取；每条记录保留真实的历史来源文件名。新分析程序从发布的排名和
-qrels 重新计算，再逐项与这些参考值比较。
+The two reference files provide **3,895 rows and 10,274 numerical comparisons** in total. I extracted these values from result tables saved in the original project; each record retains its actual historical source filename. The new analysis programs recompute results from the released rankings and qrels, then compare them individually with these reference values.
 
-我在[排名生成代码](../retrieval_source/README.md)中保留方法实现和依赖说明。
-原程序按模型标识加载 checkpoint；其加载调用使用模型名。当前发布以保存的排名
-及 SHA-256 固定本次计算输入，模型名称、输入长度、查询前缀和具体评分定义见
-[方法说明](../docs/METHODS.md)。
+I preserve the method implementations and dependency documentation in the [ranking-generation source code](../retrieval_source/README.md). The original programs load checkpoints by model identifier; their loading calls specify model names. This release fixes the inputs to the present calculations through saved rankings and SHA-256 hashes. Model names, input lengths, query prefixes, and scoring definitions are documented in the [methods](../docs/METHODS.md).
 
-`MANIFEST.sha256` 固定本版公开文件；Git 标签记录发布版本。
-我将文章全文、模型缓存、虚拟环境和完整原项目历史保存在本地，公开包使用
-通用排名与文本无关元数据。保存位置计数包含阶段间重复材料：初始五查询中的
-五个基础配置来自全查询排名的对应子集。
+`MANIFEST.sha256` fixes the public files in this release, and Git tags identify release versions. I retain article text, model caches, virtual environments, and the complete original project history locally; the public package uses portable rankings and metadata without document text. Counts of saved ranking positions include repeated materials across stages: the five baseline configurations in the initial five-query materials are subsets of their complete-query rankings.
 
-准备后续版本时，我先暂存拟发布文件，再运行 `python3 scripts/build_manifest.py`，
-随后执行 `python3 scripts/verify_release.py`，将验证通过的内容提交并添加新标签。
-普通复算入口只读取清单和参考值，在独立临时目录产生计算结果。
+When preparing a subsequent version, I first stage the intended release files, run `python3 scripts/build_manifest.py`, and then run `python3 scripts/verify_release.py`. I commit the verified contents and add a new tag. The standard recomputation entry point reads the manifest and reference values without modifying them and writes calculated results to an isolated temporary directory.

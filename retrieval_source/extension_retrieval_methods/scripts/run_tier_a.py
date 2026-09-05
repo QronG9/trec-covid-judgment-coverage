@@ -1,5 +1,5 @@
-"""我把 MMR、Query Expansion 和 Retrieval Random 运行到全部 50 查询。
-程序分别检查确定性方法的五查询对应关系，以及随机选择的候选成员和集合重合。"""
+"""I run MMR, Query Expansion, and Retrieval Random for all 50 queries.
+The program checks five-query correspondence for deterministic methods, and candidate membership and set overlap for random selection."""
 from __future__ import annotations
 
 import numpy as np

@@ -1,33 +1,33 @@
-# 我的贡献与工具使用
+# My Contributions and Use of Tools
 
-**作者与维护者：QronG9**
+**Author and maintainer: QronG9**
 
-我开展这项研究，是为了通过实际复现理解文档选择方法，并把“检索到了什么”“其中多少有现有判断”“这些判断确认了多少相关项”分别落实为可检查的计算。
+I conducted this study to understand document-selection methods through practical reimplementation and to make three questions separately verifiable: which documents were retrieved, how many had existing judgments, and how many were identified as relevant by those judgments.
 
-## 我完成的研究工作
+## Research Work I Completed
 
-1. **从文献构建可执行实验。** 我以 Rangreji、Zhong、Field 的文档选择研究为起点，整理查询字段、文档拼接、BM25 计分、MPNet 编码、Direct 融合、MMR、查询扩展与随机选择的实现配置，并保留具体参数与运行结果。
-2. **从初始五题扩展到全部 50 题。** 我先围绕查询 9、13、34、45、48 开展初始分析，再整理全部 50 个查询的基线分析并补充方法扩展。基本方法的五查询结果取自已保存的全查询运行，三个补充选择方法另保留单独的五题运行。发布版本汇集 12 个检索 / 选择配置、600,000 条主排名记录，并保留各阶段的来源关系。
-3. **分别报告覆盖与观察质量。** 我明确保留 qrel 的 0、1、2 和 U 状态，计算多深度 Hole、观察 precision/recall、逐查询差值与方法间集合重合，使读者能够分别检查评价材料的覆盖与现有标签下的检索结果。
-4. **把方法比较落实为具体配置。** 我加入 SPLADE、BGE 和 BM25 + CrossEncoder，保留两种 Direct 归一化，并分别运行从 Direct top-5000 选 1000 与重排 Direct top-1000 的 MMR 设置。通过记录候选集合定义、保存最终文档集合与排序，并记录模型参数，我可以对照检查集合选择与重排各自对应的结果。
-5. **补充文档可用性与未知标签分析。** 我整理标题/摘要输入、空摘要分层和全库非空摘要条件下的排名；针对固定列表计算共享 U 标签下的配对 precision 严格可达界限，并导出 BM25、MPNet、Direct 的 top-20 未判断查询—文档对清单。
-6. **把实验整理成可复算研究材料。** 我导出通用压缩排名与文本无关元数据，编写标准库分析流程、输入检查和数学语义测试，建立结果对照、哈希清单、版本记录、文档和自动验证入口。
+1. **Translating the literature into executable experiments.** Taking the document-selection study by Rangreji, Zhong, and Field as my starting point, I documented the implementation configurations for query fields, document concatenation, BM25 scoring, MPNet encoding, Direct fusion, MMR, query expansion, and random selection, and retained their specific parameters and run outputs.
+2. **Extending the initial five-query analysis to all 50 queries.** I began with queries 9, 13, 34, 45, and 48, then assembled the baseline analysis for all 50 queries and added method extensions. The five-query results for the basic methods were extracted from saved full-query runs; I also retained separate five-query runs for three supplementary selection methods. This release brings together 12 retrieval/selection configurations and 600,000 primary ranking records, while preserving the provenance relationships between stages.
+3. **Reporting judgment coverage and observed retrieval quality separately.** I explicitly retained the qrel states 0, 1, 2, and U, and computed Hole at multiple depths, observed precision/recall, per-query differences, and set overlap between methods. These calculations allow readers to examine judgment coverage separately from retrieval results under the existing labels.
+4. **Specifying concrete configurations for method comparisons.** I added SPLADE, BGE, and BM25 + CrossEncoder, retained two normalization variants of Direct, and ran separate MMR configurations that select 1000 documents from the Direct top-5000 and rerank the Direct top-1000. By documenting candidate-set definitions, preserving the final document sets and rankings, and recording model parameters, I can examine the results associated with set selection and reranking separately.
+5. **Adding analyses of document availability and unknown labels.** I documented title/abstract inputs, stratification by abstract availability, and rankings restricted to all documents in the corpus with nonempty abstracts. For fixed lists, I computed sharp attainable bounds on paired precision differences under shared U labels and exported the unjudged query–document pairs in the BM25, MPNet, and Direct top-20 results.
+6. **Organizing the experiments into research materials that support recomputation.** I exported compressed rankings in a common format and metadata without document text, implemented a standard-library analysis pipeline, input checks, and tests of mathematical semantics, and assembled reference comparisons, a hash manifest, version records, documentation, and an automated verification entry point.
 
-这些贡献对应的是本仓库中的方法实现、实验比较、评估分析和可运行材料。BM25、Sentence-BERT/MPNet、MMR、RRF、SPLADE、BGE、CrossEncoder、Hole 等方法与指标分别引用其上游工作；我的产出是它们在这里记录的实验配置、分析和可复算结果。
+These contributions consist of the method implementations, experimental comparisons, evaluation analyses, and executable materials in this repository. I attribute BM25, Sentence-BERT/MPNet, MMR, RRF, SPLADE, BGE, CrossEncoder, Hole, and the other methods and metrics to their respective upstream work; my outputs are the experimental configurations, analyses, and recomputable results documented here.
 
-## 分阶段成果
+## Outputs by Stage
 
-| 阶段 | 我的工作 | 发布中的对应内容 |
+| Stage | My work | Corresponding release contents |
 |---|---|---|
-| 初始五查询分析 | 五个查询、八个配置的分析与检查，其中五个取自全查询运行、三个保留单独五题运行 | 初始结果、冻结来源与阶段记录 |
-| 全查询基线 | BM25、MPNet、Direct 和 Random Uniform 的全部 50 查询运行，及 Direct min-max 补充 | 固定主排名、覆盖与观察指标 |
-| 后续方法扩展 | 将 MMR、Query Expansion、Retrieval Random 扩展到 50 查询；加入第二种 MMR 设置、SPLADE、BGE、BM25 + CrossEncoder | 全查询比较表、集合与顺序分析、模型配置 |
-| 评估分析与发布 | 摘要分层、非空摘要条件、配对界限、通用导出和离线复算 | 深入分析、清单、脚本、测试与本版说明 |
+| Initial five-query analysis | Analysis and checks for five queries and eight configurations, with five configurations extracted from full-query runs and three retained as separate five-query runs | Initial results, frozen source materials, and stage records |
+| Full-query baselines | Runs for all 50 queries using BM25, MPNet, Direct, and Random Uniform, supplemented by Direct min-max | Fixed primary rankings, coverage metrics, and observed metrics |
+| Subsequent method extensions | Extension of MMR, Query Expansion, and Retrieval Random to 50 queries; addition of a second MMR configuration, SPLADE, BGE, and BM25 + CrossEncoder | Full-query comparison tables, set and order analyses, and model configurations |
+| Evaluation analysis and release | Abstract stratification, the nonempty-abstract condition, paired bounds, exports in common formats, and offline recomputation | Detailed analyses, inventories, scripts, tests, and documentation for this release |
 
-方法与文件的具体对应见 [METHODS](METHODS.md)、[数据说明](../data/README.md)和[来源记录](../provenance/README.md)。我还发布了[检索实现源码](../retrieval_source/README.md)，把实际评分、候选选择、模型调用和运行保存过程与结果材料连接起来；来源哈希与语法树检查记录说明了原始实现和本版源码的对应关系。
+The correspondence between methods and files is detailed in [METHODS](METHODS.md), the [data documentation](../data/README.md), and the [provenance records](../provenance/README.md). I also release the [retrieval implementation source code](../retrieval_source/README.md), connecting the actual scoring, candidate selection, model calls, and run-saving procedures to the result materials. Source hashes and abstract syntax tree checks document the correspondence between the original implementation and the source code in this release.
 
-## 我如何使用工具
+## How I Use Tools
 
-我使用 AI（包括 Codex）辅助代码实现、结果核验、资料整理和文档写作；研究问题、实验范围、解释取舍与公开材料由我负责。我保留脚本、输入、运行结果和验证记录，使读者可以直接检查贡献所依赖的计算。
+I use AI tools, including Codex, to assist with code implementation, result verification, organization of research materials, and documentation. I am responsible for the research questions, experimental scope, interpretive decisions, and public materials. I retain scripts, inputs, run outputs, and verification records so that readers can directly inspect the computations underlying my contributions.
 
-相关性标签来自随仓库提供的 BEIR TREC-COVID qrels。本文中的“验证”指输入、程序计算、结果一致性与版本来源的检查；标签来源和模型生成阶段分别在数据说明与方法文件中记录。
+The relevance labels come from the BEIR TREC-COVID qrels included in this repository. Here, “verification” refers to checks of inputs, program computations, result consistency, and version provenance. The label sources and model-based generation stage are documented in the data and methods files, respectively.

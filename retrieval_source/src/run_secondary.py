@@ -1,4 +1,4 @@
-"""我在五个指定查询上运行 MMR、Query Expansion 和 Retrieval Random，并保存运行状态。"""
+"""I run MMR, Query Expansion, and Retrieval Random on the five specified queries and save the run state."""
 from __future__ import annotations
 
 import json

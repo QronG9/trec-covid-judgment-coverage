@@ -1,107 +1,107 @@
-# TREC-COVID 文档选择实验：方法复现与评估分析
+# TREC-COVID Document-Selection Experiments: Method Reimplementation and Evaluation
 
-**我的研究短报告 · QronG9 · v2.0.0 · 2026-09-05**
+**My Research Note · QronG9 · v2.0.0 · 2026-09-05**
 
-我以一项文档选择研究为起点，在 BEIR 版 TREC-COVID 上重建检索与选择方法，并考察固定排名中的判断覆盖、观察相关性、文档组成和候选集合。我的分析从五个查询开始，扩展至全部 50 个查询，随后完成更多模型和选择配置。本版汇集 12 个全查询配置、初始五查询结果、非空摘要补充实验和配对 precision 界限，并提供可以离线重算的输入与程序。
+Taking a document-selection study as my starting point, I reimplemented retrieval and selection methods on the BEIR version of TREC-COVID and examined judgment coverage, observed relevance, document composition, and candidate sets in fixed rankings. My analysis began with five queries, expanded to all 50 queries, and subsequently incorporated additional models and selection configurations. This version brings together 12 configurations evaluated on all queries, the initial five-query results, supplementary nonempty-abstract experiments, and paired precision bounds, with inputs and programs for offline recomputation.
 
-**阅读路径：**本报告 → [方法与计算定义](METHODS.md) → [研究过程](RESEARCH_PROCESS.md) → [仓库运行说明](../README.md)。本报告是当前版本的默认阅读入口。
+**Reading path:** This report → [Methods and Computational Definitions](METHODS.md) → [Research Process](RESEARCH_PROCESS.md) → [Repository Run Instructions](../README.md). This report is the default reading entry point for the current version.
 
-## 1. 我研究的问题与实验路径
+## 1. My Research Questions and Experimental Progression
 
-Rangreji、Zhong、Field 的研究讨论文档选择如何影响面向查询的文本分析。我选择其中的 TREC-COVID 检索验证环节作为复现起点，把实验落在三个具体问题上：不同选择方法得到哪些文档；现有 qrels 对这些文档覆盖多少；在固定结果和现有标签下，可以计算哪些检索指标与比较界限。[源研究](https://arxiv.org/abs/2604.12099v1)
+The study by Rangreji, Zhong, and Field examines how document selection affects query-oriented text analysis. I chose its TREC-COVID retrieval-validation component as the starting point for my reimplementation and organized the experiments around three concrete questions: which documents different selection methods return; how much of their output is covered by the existing qrels; and which retrieval metrics and comparative bounds can be calculated from fixed results and existing labels. [Source study](https://arxiv.org/abs/2604.12099v1)
 
-我使用 BEIR 的数据组织与评估背景。BEIR 对 Hole 和补充相关性判断的讨论，为我区分“判断覆盖”与“观察质量”提供了依据；我在这一背景上完成具体方法实现、全查询比较、输入条件与候选集合分析。[BEIR](https://arxiv.org/abs/2104.08663)
+I use BEIR's data organization and evaluation context. BEIR's discussion of Hole and supplementary relevance judgments informs my distinction between judgment coverage and observed quality. Within this context, I implemented specific methods, compared their results across all queries, and analyzed input conditions and candidate sets. [BEIR](https://arxiv.org/abs/2104.08663)
 
-我的工作经历了四个相互衔接的阶段：
+My work proceeded through four connected stages:
 
-| 阶段 | 我完成的内容 | 本版保存的结果 |
+| Stage | Work I completed | Results preserved in this version |
 |---|---|---|
-| 初始五查询分析 | 查询 9、13、34、45、48；四个基本方法、Direct min-max 与三个补充选择方法 | 八配置 × 五查询 × 1000 条排名，共 40,000 条 |
-| 全查询基线 | BM25、MPNet、Direct、Random Uniform，以及 Direct min-max | 五配置的全部 50 查询排名与评价 |
-| 冻结后扩展 | 全查询 MMR、Query Expansion、Retrieval Random；加入 MMR 重排变体、SPLADE、BGE、BM25 + CrossEncoder | 全查询配置合计 12 个，共 600,000 条主排名 |
-| 评估分析与发布 | 摘要分层、非空摘要排名、未知标签界限、通用文件导出和复算流程 | 两个非空摘要配置另有 100,000 条排名；完整结果与验证材料 |
+| Initial five-query analysis | Queries 9, 13, 34, 45, and 48; four basic methods, Direct min-max, and three additional selection methods | Eight configurations × five queries × 1000 ranking positions, totaling 40,000 positions |
+| Baselines evaluated on all queries | BM25, MPNet, Direct, Random Uniform, and Direct min-max | Rankings and evaluations for all 50 queries in the five configurations |
+| Post-freeze extensions | MMR, Query Expansion, and Retrieval Random evaluated on all queries; addition of the MMR reranking variant, SPLADE, BGE, and BM25 + CrossEncoder | A total of 12 configurations evaluated on all queries, with 600,000 main ranking positions |
+| Evaluation analyses and release | Abstract strata, nonempty-abstract rankings, unknown-label bounds, portable file exports, and recomputation workflow | A further 100,000 ranking positions in two nonempty-abstract configurations, together with complete results and validation materials |
 
-五个基础配置在初始阶段已生成全 50 查询排名；五查询材料取其中对应查询。MMR、Query Expansion、Retrieval Random 则先保存五查询运行，再完成全查询扩展。
+The five base configurations already had rankings for all 50 queries in the initial stage; the five-query materials select the corresponding queries from those rankings. MMR, Query Expansion, and Retrieval Random were initially saved as five-query runs and subsequently extended to all queries.
 
-各组排名文件可以分别读取；合计 **740,000 条保存的排名位置**。我以原始冻结记录保留阶段成果，再将已完成的补充运行纳入本版。这里的“冻结”指文件版本与哈希记录，具体来源见[研究过程](RESEARCH_PROCESS.md)和[版本记录](../provenance/README.md)。
+Each group of ranking files can be read separately; together they contain **740,000 saved ranking positions**. I preserve the stage-specific outputs through the original freeze records and incorporate the completed supplementary runs into this version. Here, “freeze” refers to file-version and hash records; the specific sources are documented in the [research process](RESEARCH_PROCESS.md) and [version records](../provenance/README.md).
 
-我还保留五查询与全查询运行的对应检查。MMR 和 Query Expansion 在这五题上的 top-1000 次序逐项相同；Retrieval Random 因查询遍历推进同一种子随机流，在两个阶段得到不同抽样，五题平均集合重合率为 0.1902。我分别保存阶段结果和计算协议，使读者能够查看实验扩展时哪些输入与输出保持一致，以及随机过程如何对应到实际文档。[跨阶段对应表](../results/extensions/pilot_full50_overlap_summary.csv)
+I also retain correspondence checks between the five-query runs and the runs covering all queries. MMR and Query Expansion have identical top-1000 sequences for each of these five queries. Retrieval Random produces different samples across the two stages because query traversal advances the random stream initialized with the same seed; the mean set overlap across the five queries is 0.1902. I preserve the stage-specific results and computational protocols separately so that readers can examine which inputs and outputs remain consistent as the experiments expand, and how the random process maps to the actual documents. [Cross-stage correspondence table](../results/extensions/pilot_full50_overlap_summary.csv)
 
-## 2. 我如何定义数据与比较
+## 2. How I Define the Data and Comparisons
 
-我使用 171,332 篇文档、50 个查询和 66,336 行 qrels。66,334 个查询—文档对的标签为 0、1、2；另两行 −1 与缺少有效标签的情况在计算中记为 U。我保留原始 qrels，让 **已判断的 0 与未判断的 U** 在数据和覆盖统计中始终可区分。U 的含义限于这一数据版本中的有效判断可用性。
+I use 171,332 documents, 50 queries, and 66,336 qrels rows. Of these, 66,334 query–document pairs have labels of 0, 1, or 2; the remaining two rows labeled −1, together with cases lacking a valid label, are represented as U in the calculations. I preserve the original qrels so that **judged 0 and unjudged U** remain distinguishable in both the data and the coverage statistics. U refers specifically to the availability of a valid judgment in this data version.
 
-我使用查询的自然语言 `text` 字段，文档由标题与摘要拼接，按具体模型记录的长度、前缀和评分设置生成排名。每个全查询配置每题保留 1000 篇不同文档。表中 MPNet 对应 `sentence-transformers/all-mpnet-base-v2`；Direct 默认指 BM25 与 MPNet 的 max-sum 融合。归一化变体、候选深度、随机流和并列处理均在[方法说明](METHODS.md)明确列出。
+I use the natural-language `text` field for each query and concatenate the title and abstract for each document. Rankings are generated using the length, prefix, and scoring settings recorded for each model. Each configuration evaluated on all queries retains 1000 distinct documents per query. MPNet in the tables denotes `sentence-transformers/all-mpnet-base-v2`; Direct refers by default to max-sum fusion of BM25 and MPNet. The normalization variants, candidate depths, random streams, and tie handling are specified in the [methods documentation](METHODS.md).
 
-我在四个深度 @20、@50、@100、@1000 计算 Hole，即前 k 篇中 U 的比例。观察 precision 按现有标签计数：正文采用 `qrel=2`，U 暂不贡献相关命中；补充表另提供 `qrel≥1`。所有主表对这 50 个查询等权平均，描述的是这一固定基准的完整查询集。
+I calculate Hole at four depths, @20, @50, @100, and @1000, as the proportion of U among the first k documents. Observed precision counts relevance according to the existing labels: the main text uses `qrel=2`, with U contributing no relevant hits in this calculation; supplementary tables also provide `qrel≥1`. All main tables use equally weighted means over these 50 queries and describe the complete query set of this fixed benchmark.
 
-## 3. 全查询比较带来了哪些结果
+## 3. Results from the Comparison Across All Queries
 
-### 3.1 十二个配置的覆盖与观察指标
+### 3.1 Coverage and Observed Metrics for Twelve Configurations
 
-| 配置 | Hole@20 | Hole@100 | 观察 P@20 | 观察 Recall@1000 |
+| Configuration | Hole@20 | Hole@100 | Observed P@20 | Observed Recall@1000 |
 |---|---:|---:|---:|---:|
 | BM25 | 0.0720 | 0.1960 | 0.487 | 0.509803 |
 | MPNet | 0.4030 | 0.4918 | 0.426 | 0.497134 |
-| Direct：max-sum | 0.0540 | 0.1464 | 0.630 | 0.611844 |
-| Direct：min-max | 0.0570 | 0.1508 | 0.628 | 0.612986 |
+| Direct: max-sum | 0.0540 | 0.1464 | 0.630 | 0.611844 |
+| Direct: min-max | 0.0570 | 0.1508 | 0.628 | 0.612986 |
 | Random Uniform | 0.9960 | 0.9934 | 0.001 | 0.006417 |
-| Direct + MMR：从 5000 选 1000 | 0.8510 | 0.8760 | 0.035 | 0.162314 |
-| Direct + MMR：重排既有 1000 | 0.6600 | 0.6630 | 0.078 | 0.611844 |
+| Direct + MMR: select 1000 from 5000 | 0.8510 | 0.8760 | 0.035 | 0.162314 |
+| Direct + MMR: rerank the existing 1000 | 0.6600 | 0.6630 | 0.078 | 0.611844 |
 | Query Expansion | 0.0600 | 0.1570 | 0.622 | 0.568064 |
 | Retrieval Random | 0.1470 | 0.4228 | 0.503 | 0.173305 |
 | SPLADE | 0.1080 | 0.2636 | 0.600 | 0.512628 |
 | BGE | 0.1180 | 0.2788 | 0.668 | 0.566764 |
 | BM25 + CrossEncoder | 0.0880 | 0.2416 | 0.581 | 0.509803 |
 
-来源：[覆盖汇总](../results/extensions/coverage_summary.csv)、[观察指标汇总](../results/extensions/observed_ir_summary.csv)。以上 precision/recall 使用严格相关性阈值；更高精度数值和逐查询结果保存在 CSV 中。
+Sources: [coverage summary](../results/extensions/coverage_summary.csv) and [observed-metric summary](../results/extensions/observed_ir_summary.csv). Precision and recall above use the strict relevance threshold; the CSV files retain values at greater numerical precision and per-query results.
 
-我把覆盖与观察指标并列，是因为它们提供不同信息。例如，BM25 的 Hole@20 为 0.072，BGE 为 0.118；对应观察 P@20 为 0.487 和 0.668。读者可以同时看到判断可用性与现有标签确认的相关命中，而无需用一个指标代替另一个。
+I present coverage and observed metrics alongside one another because they convey different information. For example, BM25 has Hole@20 of 0.072 and BGE has 0.118; their corresponding observed P@20 values are 0.487 and 0.668. Readers can examine both judgment availability and the relevant hits confirmed by existing labels without substituting one metric for the other.
 
-扩展后的结果也让我能够按具体模型报告稠密检索的表现：MPNet 与 BGE 的 Hole@20 分别为 0.403 和 0.118。两者使用不同模型、训练来源及输入设置；这组比较描述这些已记录配置的结果。SPLADE 与 BM25 + CrossEncoder 则提供了另外两种神经检索 / 重排配置，便于在同一数据与标签下逐项比较。
+The extended results also allow me to report dense-retrieval performance by specific model: MPNet and BGE have Hole@20 values of 0.403 and 0.118, respectively. They use different models, training sources, and input settings; this comparison describes the results of these recorded configurations. SPLADE and BM25 + CrossEncoder provide two additional neural retrieval or reranking configurations for individual comparison under the same data and labels.
 
-![我的十二个配置的判断覆盖与观察 precision](../figures/method_comparison.png)
+![Judgment coverage and observed precision for my twelve configurations](../figures/method_comparison.png)
 
-### 3.2 我分别检查文档集合与前列顺序
+### 3.2 Examining Document Sets and Ranking Prefixes Separately
 
-我设计了两个直接可检验的集合保持条件。BM25 + CrossEncoder 对 BM25 top-1000 全部重评分，最终集合逐题相同。因此，二者 Hole@1000 均为 0.6278，Recall@1000 均为约 0.509803；前 20 项的观察 P@20 从 0.487 变为 0.581。
+I designed two directly testable conditions that preserve document sets. BM25 + CrossEncoder rescores every document in BM25 top-1000, and the final sets are identical for each query. Both therefore have Hole@1000 of 0.6278 and Recall@1000 of approximately 0.509803; observed P@20 for the first 20 items changes from 0.487 to 0.581.
 
-同样，MMR 重排变体保留 Direct top-1000 集合，二者 Hole@1000 均为 0.59564、Recall@1000 均为约 0.611844。MMR 的逐步选择顺序改变前列组成，Hole@20 为 0.660。另一 MMR 配置从 Direct top-5000 选取 1000，其最终集合允许变化，对应 Hole@1000 为 0.86392。通过保存这两种配置，我把候选集合选择和集合内顺序变化落实为可以逐查询核查的对象。[集合一致性检查](../results/extensions/set_invariance_checks.csv)
+Similarly, the MMR reranking variant preserves the Direct top-1000 set, and both have Hole@1000 of 0.59564 and Recall@1000 of approximately 0.611844. MMR's sequential selection order changes the composition of the ranking prefix, yielding Hole@20 of 0.660. The other MMR configuration selects 1000 documents from Direct top-5000, allowing the final set to change; its Hole@1000 is 0.86392. By preserving both configurations, I make candidate-set selection and within-set ordering changes available for per-query examination. [Set-invariance checks](../results/extensions/set_invariance_checks.csv)
 
-我另计算各配置与 BM25 同深度结果的重合率、共享与独有文档的判断覆盖，以及返回文档位于 BM25 top-1000 内外的组成。最后一项的候选边界明确是已保存的 BM25 top-1000，读者可以直接检查给定候选深度包含了哪些文档。[集合重合](../results/extensions/overlap_vs_bm25_summary.csv) · [集合分层](../results/extensions/judged_shared_exclusive_summary.csv) · [候选成员关系](../results/extensions/bm25_candidate_membership_summary.csv)
+I also calculate each configuration's overlap with BM25 at the same depth, judgment coverage among shared and exclusive documents, and the composition of returned documents inside and outside BM25 top-1000. The candidate boundary in the last analysis is explicitly the saved BM25 top-1000, enabling readers to inspect which documents are included at this candidate depth. [Set overlap](../results/extensions/overlap_vs_bm25_summary.csv) · [Set strata](../results/extensions/judged_shared_exclusive_summary.csv) · [Candidate membership](../results/extensions/bm25_candidate_membership_summary.csv)
 
-Query Expansion 还保存了每题实际使用的关键词；Retrieval Random 则在 Direct top-5000 中均匀无放回抽取 1000 篇，并保留所抽文档的 Direct 相对顺序。这些记录使方法名称能够对应到具体的输入、选择和排序过程。
+For Query Expansion, I also save the keywords actually used for each query. Retrieval Random samples 1000 documents uniformly without replacement from Direct top-5000 and preserves their relative Direct order. These records connect each method name to its specific inputs, selection procedure, and ordering procedure.
 
-### 3.3 归一化与摘要可用性补充
+### 3.3 Supplementary Analyses of Normalization and Abstract Availability
 
-我分别运行 Direct 的 max-sum 和 min-max 归一化，观察 P@20 为 0.630、0.628，Hole@20 为 0.054、0.057。两份固定排名使读者可以进一步检查分数归一化变化对应的名次与集合变化。
+I ran Direct with max-sum and min-max normalization separately, obtaining observed P@20 values of 0.630 and 0.628 and Hole@20 values of 0.054 and 0.057, respectively. The two fixed rankings allow readers to further examine the changes in ranks and document sets associated with the normalization change.
 
-我还从文档输入检查 BM25 和 MPNet 的结果组成。在各自 top-20 中，无摘要文档比例分别为 3.8% 和 64.2%。这些比例按各方法实际返回的文档计算，分层表同时给出文档数、有效判断数和相关命中。[摘要分层](../results/abstract_strata.csv)
+I also examined the composition of BM25 and MPNet results through their document inputs. Documents without abstracts account for 3.8% and 64.2% of their respective top-20 results. These proportions are calculated from the documents actually returned by each method; the stratified table also provides document counts, valid-judgment counts, and relevant hits. [Abstract strata](../results/abstract_strata.csv)
 
-随后，我在全库的 129,192 篇非空摘要文档中，沿用既有评分定义重新取前列。BM25 保留原全库 IDF 和平均文档长度；MPNet 复用既有文档向量。每题仍取得完整 top-k。两者 Hole@20 为 0.064、0.226，差为 16.2 个百分点；原全库差为 33.1 个百分点。在 @100，非空摘要条件下的差为 17.78 个百分点。[非空摘要结果](../results/nonempty_coverage_summary.csv)
+I then reselected the top-ranked documents from all 129,192 corpus documents with nonempty abstracts, retaining the existing scoring definitions. BM25 retains the original full-corpus IDF and average document length; MPNet reuses the existing document vectors. Each query still receives a complete top-k list. The resulting Hole@20 values are 0.064 and 0.226, a difference of 16.2 percentage points, compared with the original full-corpus difference of 33.1 percentage points. At @100, the difference under the nonempty-abstract condition is 17.78 percentage points. [Nonempty-abstract results](../results/nonempty_coverage_summary.csv)
 
-我将这项结果报告为文档可入选条件的敏感性比较。它同时保留原全库结果和筛选后的排名，展示改变可入选文档总体时，相同评分定义如何对应不同的覆盖结果。
+I report this result as a sensitivity comparison for document eligibility. I retain both the original full-corpus results and the filtered rankings, showing how the same scoring definitions yield different coverage results when the eligible document population changes.
 
-## 4. 我如何量化未知标签对方法比较的影响
+## 4. How I Quantify the Effect of Unknown Labels on Method Comparisons
 
-对两个固定 top-k 列表，我让同一查询—文档对的 U 在方法间共享一个二值相关标签，并保留所有既有标签。共享 U 在两方法 precision 差中抵消；只有各方法独有的 U 可以改变配对差。由此，我计算每个查询及查询平均的严格可达下界和上界。
+For two fixed top-k lists, I assign a shared binary relevance label across methods to each U query–document pair and retain all existing labels. Shared U pairs cancel in the precision difference between methods; only U pairs exclusive to either method can alter the paired difference. I use this property to compute sharp attainable lower and upper bounds for each query and for the mean across queries.
 
-三个基线在 P@20、QREL=2 下的结果为：
+The results for the three baselines at P@20 with QREL=2 are:
 
-| 平均 P@20 差 | 观察值 | 可达下界 | 可达上界 |
+| Mean P@20 difference | Observed value | Attainable lower bound | Attainable upper bound |
 |---|---:|---:|---:|
 | MPNet−BM25 | −0.061 | −0.132 | 0.341 |
 | Direct−BM25 | 0.143 | 0.092 | 0.176 |
 | MPNet−Direct | −0.204 | −0.242 | 0.183 |
 
-Direct−BM25 的整个区间为正：在固定排名、保留已有标签和当前相关性阈值下，对 U 的任意二值补全均保留 Direct 的平均优势。另两个区间跨越零，明确给出各自可达的比较范围。这些是未知标签赋值的数学界限，区间端点可通过具体赋值达到。公式和适用条件见[方法说明](METHODS.md)。
+The entire Direct−BM25 interval is positive: with fixed rankings, existing labels retained, and the current relevance threshold, every binary completion of U preserves Direct's mean advantage. The other two intervals span zero and explicitly give the attainable range for each comparison. These are mathematical bounds over assignments of unknown labels, and specific assignments attain their endpoints. The formulas and conditions of applicability are provided in the [methods documentation](METHODS.md).
 
-我将这一计算扩展至其余配置相对 BM25 的比较，发布 @20、@100 和两个相关性阈值的逐查询界限。在同样的 P@20 与 QREL=2 条件下，BGE−BM25 的范围为 **[0.113, 0.295]**，SPLADE−BM25 为 **[0.045, 0.217]**，BM25 + CrossEncoder−BM25 为 **[0.028, 0.176]**，Query Expansion−BM25 为 **[0.084, 0.174]**。这些区间均为正，明确量化了保存排名中哪些平均比较在全部允许的 U 补全下保持方向。同时，三个基线的 top-20 并集共 2,170 个查询—文档对，其中 492 个为 U，涉及 461 篇不同文档；我导出这些对及其方法名次，作为可以继续查看的标签可用性清单。[三基线界限](../results/paired_precision_bounds_summary.csv) · [扩展界限](../results/extensions/paired_precision_bounds_summary.csv) · [492 对清单](../results/top20_unjudged_frame.csv)
+I extend this calculation to comparisons of the remaining configurations against BM25, releasing per-query bounds at @20 and @100 under both relevance thresholds. Under the same P@20 and QREL=2 conditions, the ranges are **[0.113, 0.295]** for BGE−BM25, **[0.045, 0.217]** for SPLADE−BM25, **[0.028, 0.176]** for BM25 + CrossEncoder−BM25, and **[0.084, 0.174]** for Query Expansion−BM25. All of these intervals are positive, explicitly quantifying which mean comparisons in the saved rankings retain their direction under every admissible completion of U. In addition, the top-20 union of the three baselines contains 2,170 query–document pairs, of which 492 are U, involving 461 distinct documents. I export these pairs and their method-specific ranks as a label-availability inventory for further inspection. [Three-baseline bounds](../results/paired_precision_bounds_summary.csv) · [Extended bounds](../results/extensions/paired_precision_bounds_summary.csv) · [Inventory of 492 pairs](../results/top20_unjudged_frame.csv)
 
-## 5. 我提供的可复算成果
+## 5. Reproducible Outputs I Provide
 
-我的贡献汇集为一条从具体方法、保存排名、原始判断到结果表的可检查路径：全查询方法比较、候选集合与顺序对照、文档可用性敏感性、未知标签界限，以及分阶段版本记录。
+My contributions form a traceable sequence from specific methods, saved rankings, and original judgments to result tables: method comparisons across all queries, candidate-set and ordering comparisons, document-availability sensitivity analyses, unknown-label bounds, and stage-specific version records.
 
-我把发布入口设在固定排名到结果的离线复算层：仅用 Python 标准库即可重建表格。原始语料到排名的生成配置、代码来源、模型标识和运行记录另行保留；排名与输入文件以哈希固定。本版验证记录分别说明文件完整性、计算结果一致性和程序测试。[复算说明](../README.md) · [本版验证](../provenance/RELEASE_VALIDATION.md)
+I make offline recomputation from fixed rankings to results the release entry point: the tables can be regenerated using only the Python standard library. I separately preserve the configurations, code provenance, model identifiers, and run records for generating rankings from the original corpus; hashes fix the rankings and input files. The validation records for this version separately document file integrity, computational consistency, and program tests. [Recomputation instructions](../README.md) · [Validation for this version](../provenance/RELEASE_VALIDATION.md)
 
-我参考 ACM 对研究材料说明充分、前后一致、范围内完整和能够执行的要求组织仓库。文献、数据、第三方模型与代码分别保留来源；我使用 AI 辅助实现、核验和写作，并对研究范围与公开材料负责。[ACM 材料标准](https://www.acm.org/publications/policies/artifact-review-and-badging-current) · [我的贡献与工具使用](CONTRIBUTIONS.md)
+I organize the repository with reference to ACM's criteria that research artifacts be documented, consistent, complete within their stated scope, and exercisable. References, data, third-party models, and code each retain their source attribution. I use AI assistance for implementation, verification, and writing, and I take responsibility for the research scope and released materials. [ACM artifact criteria](https://www.acm.org/publications/policies/artifact-review-and-badging-current) · [My contributions and tool use](CONTRIBUTIONS.md)
