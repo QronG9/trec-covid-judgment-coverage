@@ -28,6 +28,6 @@ The correspondence between methods and files is detailed in [METHODS](METHODS.md
 
 ## How I Use Tools
 
-I use AI tools, including Codex, to assist with code implementation, result verification, organization of research materials, and documentation. I am responsible for the research questions, experimental scope, interpretive decisions, and public materials. I retain scripts, inputs, run outputs, and verification records so that readers can directly inspect the computations underlying my contributions.
+I use AI tools to assist with code implementation, result verification, organization of research materials, and documentation. I am responsible for the research questions, experimental scope, interpretive decisions, and public materials. I retain scripts, inputs, run outputs, and verification records so that readers can directly inspect the computations underlying my contributions.
 
 The relevance labels come from the BEIR TREC-COVID qrels included in this repository. Here, “verification” refers to checks of inputs, program computations, result consistency, and version provenance. The label sources and model-based generation stage are documented in the data and methods files, respectively.
